@@ -10,6 +10,7 @@
 # Datasets e imágenes pesadas
 ai_core/dataset/
 ai_core/runs/
+ai_core/raw_data/
 
 # Pesos y modelos generados (solo rastrearemos los scripts, no los binarios grandes)
 ai_core/weights/*.pt
