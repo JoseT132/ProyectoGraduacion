@@ -1,0 +1,21 @@
+# Entornos virtuales
+**/venv/
+**/.venv/
+**/env/
+
+# Caché de Python
+**/__pycache__/
+*.py[cod]
+
+# Datasets e imágenes pesadas
+ai_core/dataset/
+ai_core/runs/
+
+# Pesos y modelos generados (solo rastrearemos los scripts, no los binarios grandes)
+ai_core/weights/*.pt
+ai_core/weights/*.tflite
+ai_core/weights/*.onnx
+
+# Archivos de configuración local de editores
+.vscode/
+.idea/
