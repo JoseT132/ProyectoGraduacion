@@ -1,0 +1,48 @@
+# Entornos virtuales
+**/venv/
+**/.venv/
+**/env/
+
+# Caché de Python
+**/__pycache__/
+*.py[cod]
+*.pyo
+
+# IDEs
+.vscode/
+.idea/
+
+# Datasets y modelos pesados
+ai_core/raw_data/
+ai_core/dataset_cls/
+ai_core/dataset_det/
+runs/
+*.pt
+*.onnx
+*.tflite
+*.engine
+*.mlmodel
+*.torchscript
+ai_core/models_export/
+mobile_app/app/src/main/assets/*.onnx
+mobile_app/app/src/main/assets/*.tflite
+
+# Base de datos local de desarrollo
+backend/*.db
+backend/*.sqlite
+backend/*.sqlite3
+
+# Android / Gradle
+mobile_app/.gradle/
+mobile_app/local.properties
+mobile_app/app/build/
+mobile_app/*.iml
+mobile_app/*.log
+mobile_app/captures/
+mobile_app/.cxx/
+mobile_app/app/release/
+mobile_app/app/debug/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

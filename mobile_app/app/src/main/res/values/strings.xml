@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PlagueID</string>
+    <string name="take_photo">Tomar foto</string>
+    <string name="select_gallery">Galería</string>
+    <string name="identify">Identificar</string>
+    <string name="hint">Selecciona o toma una foto de un insecto</string>
+    <string name="loading">Analizando…</string>
+    <string name="ficha_button">Ver ficha técnica</string>
+    <string name="camera_permission">Se requiere permiso de cámara</string>
+</resources>
