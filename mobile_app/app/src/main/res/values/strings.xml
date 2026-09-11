@@ -12,4 +12,27 @@
     <string name="load_image_error">Error al cargar imagen</string>
     <string name="no_insect_detected">No se detectó ningún insecto. Intenta con otra foto.</string>
     <string name="ficha_error">No se pudo cargar la ficha técnica</string>
+
+    <string name="login_subtitle">Inicia sesión para continuar</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="register">Crear cuenta</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="birth_date_hint">Fecha de nacimiento (YYYY-MM-DD)</string>
+    <string name="login_google">Continuar con Google</string>
+    <string name="login_facebook">Continuar con Facebook</string>
+    <string name="no_account">¿No tienes cuenta? Regístrate</string>
+    <string name="has_account">¿Ya tienes cuenta? Inicia sesión</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_history">Historial</string>
+    <string name="title_profile">Perfil</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="age_format">Edad: %1$s años</string>
+    <string name="no_history">No tienes detecciones aún</string>
+
+    <string name="google_web_client_id" translatable="false"></string>
+    <string name="facebook_app_id" translatable="false"></string>
 </resources>

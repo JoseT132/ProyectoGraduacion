@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from . import models, crud, schemas, seed
+from . import auth
 from .database import engine, get_db
 from .services.predict import predict_image
 
@@ -23,6 +24,8 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan
 )
+
+app.include_router(auth.router)
 
 
 @app.get("/")
@@ -44,7 +47,11 @@ def get_species(slug: str, db: Session = Depends(get_db)):
 
 
 @app.post("/predict", response_model=schemas.PredictResponse)
-async def predict(file: UploadFile = File(...), db: Session = Depends(get_db)):
+async def predict(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user),
+):
     if file.content_type and not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="El archivo debe ser una imagen")
 
@@ -61,9 +68,10 @@ async def predict(file: UploadFile = File(...), db: Session = Depends(get_db)):
         crud.create_detection(
             db,
             species_id=species.id,
+            user_id=current_user.id,
             confidence=top["confidence"],
             top_predictions=predictions,
-            image_path=file.filename
+            image_path=file.filename,
         )
 
     return {
@@ -71,5 +79,15 @@ async def predict(file: UploadFile = File(...), db: Session = Depends(get_db)):
         "slug": top["slug"],
         "confidence": top["confidence"],
         "top_predictions": predictions,
-        "ficha": species
+        "ficha": species,
     }
+
+
+@app.get("/detections", response_model=List[schemas.DetectionResponse])
+def get_detections(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user),
+):
+    return crud.get_user_detections(db, current_user.id, skip=skip, limit=limit)

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, date
 
 
 class SpeciesBase(BaseModel):
@@ -45,3 +45,70 @@ class PredictResponse(BaseModel):
     confidence: float
     top_predictions: List[Prediction]
     ficha: Optional[SpeciesResponse] = None
+
+
+class UserBase(BaseModel):
+    first_name: str
+    last_name: str
+    email: str
+
+
+class UserCreate(UserBase):
+    password: str
+    birth_date: Optional[date] = None
+
+
+class UserResponse(UserBase):
+    id: int
+    age: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class UserRegister(UserBase):
+    password: str
+    birth_date: Optional[date] = None
+
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+class TokenPayload(BaseModel):
+    sub: Optional[int] = None
+
+
+class OAuthLogin(BaseModel):
+    token: str
+
+
+class UserProfile(UserBase):
+    id: int
+    age: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class DetectionBase(BaseModel):
+    confidence: Optional[float] = None
+    top_predictions: Optional[List[Prediction]] = None
+    image_path: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+
+class DetectionResponse(DetectionBase):
+    id: int
+    species: Optional[SpeciesResponse] = None
+
+    class Config:
+        from_attributes = True
