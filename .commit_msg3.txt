@@ -1,9 +1,0 @@
-Integra detector binario en Android y mejora la interfaz de usuario.
-
-- Exporta e incluye el detector YOLO11s binario en assets.
-- Agrega OnnxDetector.kt para localizar insectos con bounding box.
-- Actualiza MainActivity: detecta, recorta, clasifica y dibuja el box.
-- Redisenar layout con MaterialCardView, botones Material y fondo de resultado.
-- Actualiza strings con mensajes de error y deteccion.
-
-Generated with Devin
