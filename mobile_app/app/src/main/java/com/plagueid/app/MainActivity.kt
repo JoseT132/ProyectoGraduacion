@@ -4,7 +4,9 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -18,7 +20,9 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.plagueid.app.api.ApiService
 import com.plagueid.app.databinding.ActivityMainBinding
+import com.plagueid.app.ml.Detection
 import com.plagueid.app.ml.OnnxClassifier
+import com.plagueid.app.ml.OnnxDetector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,10 +34,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var classifier: OnnxClassifier
+    private lateinit var detector: OnnxDetector
 
     private var currentPhotoUri: Uri? = null
     private var selectedBitmap: Bitmap? = null
     private var lastSlug: String? = null
+    private var lastCommonName: String? = null
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -62,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         classifier = OnnxClassifier(this)
+        detector = OnnxDetector(this)
 
         binding.cameraButton.setOnClickListener { checkCameraPermission() }
         binding.galleryButton.setOnClickListener { galleryLauncher.launch("image/*") }
@@ -108,36 +115,55 @@ class MainActivity : AppCompatActivity() {
             binding.resultText.text = getString(R.string.hint)
             binding.fichaButton.visibility = View.GONE
             lastSlug = null
+            lastCommonName = null
         } catch (e: Exception) {
-            Toast.makeText(this, "Error al cargar imagen", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.load_image_error, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun identify() {
         val bitmap = selectedBitmap ?: return Toast.makeText(
             this,
-            "Selecciona o toma una foto primero",
+            R.string.select_image_first,
             Toast.LENGTH_SHORT
         ).show()
 
         binding.progressBar.visibility = View.VISIBLE
+        binding.fichaButton.visibility = View.GONE
 
         lifecycleScope.launch(Dispatchers.Default) {
             try {
-                val predictions = classifier.classify(bitmap)
+                val detection = detector.detect(bitmap, confThreshold = 0.25f)
+
+                if (detection == null) {
+                    withContext(Dispatchers.Main) {
+                        binding.progressBar.visibility = View.GONE
+                        binding.resultText.text = getString(R.string.no_insect_detected)
+                    }
+                    return@launch
+                }
+
+                val crop = cropBitmap(bitmap, detection)
+                val predictions = classifier.classify(crop)
                 val top = predictions.first()
                 lastSlug = top.first
 
+                val overlay = drawDetection(bitmap, detection)
+                val message = buildString {
+                    appendLine("Especie: ${top.first.replace("_", " ")}")
+                    appendLine("Confianza: ${(top.second * 100).format(2)}%")
+                    appendLine()
+                    appendLine("Detección: ${(detection.confidence * 100).format(2)}%")
+                    appendLine("Top 5:")
+                    predictions.forEachIndexed { i, p ->
+                        appendLine("${i + 1}. ${p.first.replace("_", " ")}: ${(p.second * 100).format(2)}%")
+                    }
+                }
+
                 withContext(Dispatchers.Main) {
                     binding.progressBar.visibility = View.GONE
-                    binding.resultText.text = buildString {
-                        append("${top.first.replace("_", " ")}\n")
-                        append("Confianza: ${(top.second * 100).format(2)}%\n\n")
-                        append("Top 5:\n")
-                        predictions.forEachIndexed { i, p ->
-                            append("${i + 1}. ${p.first.replace("_", " ")}: ${(p.second * 100).format(2)}%\n")
-                        }
-                    }
+                    binding.imagePreview.setImageBitmap(overlay)
+                    binding.resultText.text = message
                     binding.fichaButton.visibility = View.VISIBLE
                 }
             } catch (e: Exception) {
@@ -149,6 +175,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun cropBitmap(bitmap: Bitmap, detection: Detection): Bitmap {
+        val x = detection.x1.toInt().coerceAtLeast(0)
+        val y = detection.y1.toInt().coerceAtLeast(0)
+        val width = (detection.x2 - detection.x1).toInt().coerceAtLeast(1)
+        val height = (detection.y2 - detection.y1).toInt().coerceAtLeast(1)
+        val safeWidth = width.coerceAtMost(bitmap.width - x)
+        val safeHeight = height.coerceAtMost(bitmap.height - y)
+        return Bitmap.createBitmap(bitmap, x, y, safeWidth, safeHeight)
+    }
+
+    private fun drawDetection(bitmap: Bitmap, detection: Detection): Bitmap {
+        val mutable = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        val canvas = Canvas(mutable)
+        val paint = Paint().apply {
+            color = android.graphics.Color.GREEN
+            style = Paint.Style.STROKE
+            strokeWidth = 8f
+            isAntiAlias = true
+        }
+        val rect = Rect(
+            detection.x1.toInt().coerceAtLeast(0),
+            detection.y1.toInt().coerceAtLeast(0),
+            detection.x2.toInt().coerceAtMost(bitmap.width),
+            detection.y2.toInt().coerceAtMost(bitmap.height)
+        )
+        canvas.drawRect(rect, paint)
+        return mutable
+    }
+
     private fun loadFicha() {
         val slug = lastSlug ?: return
         lifecycleScope.launch {
@@ -156,7 +211,7 @@ class MainActivity : AppCompatActivity() {
             if (species != null) {
                 showFichaDialog(species)
             } else {
-                Toast.makeText(this@MainActivity, "No se pudo cargar la ficha técnica", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, R.string.ficha_error, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -190,5 +245,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         classifier.close()
+        detector.close()
     }
 }

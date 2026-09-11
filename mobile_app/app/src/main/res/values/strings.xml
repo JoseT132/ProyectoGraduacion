@@ -8,4 +8,8 @@
     <string name="loading">Analizando…</string>
     <string name="ficha_button">Ver ficha técnica</string>
     <string name="camera_permission">Se requiere permiso de cámara</string>
+    <string name="select_image_first">Selecciona o toma una foto primero</string>
+    <string name="load_image_error">Error al cargar imagen</string>
+    <string name="no_insect_detected">No se detectó ningún insecto. Intenta con otra foto.</string>
+    <string name="ficha_error">No se pudo cargar la ficha técnica</string>
 </resources>
