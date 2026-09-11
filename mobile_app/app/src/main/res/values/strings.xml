@@ -21,7 +21,7 @@
     <string name="password">Contraseña</string>
     <string name="first_name">Nombre</string>
     <string name="last_name">Apellido</string>
-    <string name="birth_date_hint">Fecha de nacimiento (YYYY-MM-DD)</string>
+    <string name="birth_date_hint">Fecha de nacimiento (DD/MM/YYYY)</string>
     <string name="login_google">Continuar con Google</string>
     <string name="login_facebook">Continuar con Facebook</string>
     <string name="no_account">¿No tienes cuenta? Regístrate</string>

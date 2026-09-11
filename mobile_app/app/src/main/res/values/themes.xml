@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.PlagueID" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/leaf_green</item>
+        <item name="colorPrimaryVariant">@color/leaf_dark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/leaf_light</item>
+        <item name="android:windowBackground">@color/leaf_pale</item>
+        <item name="android:statusBarColor">@color/leaf_dark</item>
+        <item name="android:navigationBarColor">@color/leaf_pale</item>
     </style>
 </resources>
