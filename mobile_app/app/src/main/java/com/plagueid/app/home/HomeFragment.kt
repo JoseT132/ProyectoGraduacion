@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
@@ -123,16 +124,60 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadImage(uri: Uri) {
-        try {
-            val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
-            selectedBitmap = bitmap
-            binding.imagePreview.setImageBitmap(bitmap)
-            binding.resultText.text = getString(R.string.hint)
-            binding.fichaButton.visibility = View.GONE
-            lastSlug = null
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), R.string.load_image_error, Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val bitmap = decodeSampledBitmap(uri, 1280, 1280)
+                withContext(Dispatchers.Main) {
+                    if (_binding == null) return@withContext
+                    selectedBitmap = bitmap
+                    binding.imagePreview.setImageBitmap(bitmap)
+                    binding.resultText.text = getString(R.string.hint)
+                    binding.fichaButton.visibility = View.GONE
+                    lastSlug = null
+                }
+            } catch (e: OutOfMemoryError) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Imagen demasiado grande", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), R.string.load_image_error, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+    }
+
+    private fun decodeSampledBitmap(uri: Uri, reqWidth: Int, reqHeight: Int): Bitmap {
+        val resolver = requireContext().contentResolver
+
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        resolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
+
+        val options = BitmapFactory.Options().apply {
+            inSampleSize = calculateInSampleSize(bounds, reqWidth, reqHeight)
+        }
+
+        return resolver.openInputStream(uri)?.use {
+            BitmapFactory.decodeStream(it, null, options)
+        } ?: throw IllegalStateException("No se pudo decodificar la imagen")
+    }
+
+    private fun calculateInSampleSize(
+        options: BitmapFactory.Options,
+        reqWidth: Int,
+        reqHeight: Int
+    ): Int {
+        val (height, width) = options.outHeight to options.outWidth
+        var inSampleSize = 1
+
+        if (height > reqHeight || width > reqWidth) {
+            val halfHeight = height / 2
+            val halfWidth = width / 2
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                inSampleSize *= 2
+            }
+        }
+        return inSampleSize
     }
 
     private fun identify() {
@@ -151,8 +196,10 @@ class HomeFragment : Fragment() {
 
                 if (detection == null) {
                     withContext(Dispatchers.Main) {
-                        binding.progressBar.visibility = View.GONE
-                        binding.resultText.text = getString(R.string.no_insect_detected)
+                        _binding?.let {
+                            it.progressBar.visibility = View.GONE
+                            it.resultText.text = getString(R.string.no_insect_detected)
+                        }
                     }
                     return@launch
                 }
@@ -177,14 +224,21 @@ class HomeFragment : Fragment() {
                 }
 
                 withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = View.GONE
-                    binding.imagePreview.setImageBitmap(overlay)
-                    binding.resultText.text = message
-                    binding.fichaButton.visibility = View.VISIBLE
+                    _binding?.let {
+                        it.progressBar.visibility = View.GONE
+                        it.imagePreview.setImageBitmap(overlay)
+                        it.resultText.text = message
+                        it.fichaButton.visibility = View.VISIBLE
+                    }
+                }
+            } catch (e: OutOfMemoryError) {
+                withContext(Dispatchers.Main) {
+                    _binding?.let { it.progressBar.visibility = View.GONE }
+                    Toast.makeText(requireContext(), "Memoria insuficiente", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = View.GONE
+                    _binding?.let { it.progressBar.visibility = View.GONE }
                     Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }

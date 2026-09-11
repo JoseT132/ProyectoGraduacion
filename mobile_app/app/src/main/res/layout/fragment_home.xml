@@ -24,7 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
                 android:scaleType="fitCenter"
-                android:background="@android:color/darker_gray"
+                android:background="@color/leaf_pale"
+                android:src="@drawable/ic_leaf_light"
                 android:contentDescription="@string/hint" />
         </com.google.android.material.card.MaterialCardView>
 

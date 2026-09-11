@@ -25,7 +25,7 @@ class OnnxClassifier(context: Context) {
         labels = (0 until map.size).map { map[it.toString()] ?: "unknown_$it" }
     }
 
-    fun classify(bitmap: Bitmap): List<Pair<String, Float>> {
+    fun classify(bitmap: Bitmap): List<Pair<String, Float>> = synchronized(session) {
         val inputName = session.inputNames.first()
         val outputName = session.outputNames.first()
 
@@ -88,7 +88,7 @@ class OnnxClassifier(context: Context) {
         return outFile
     }
 
-    fun close() {
+    fun close() = synchronized(session) {
         session.close()
     }
 }

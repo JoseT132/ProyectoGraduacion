@@ -29,7 +29,7 @@ class OnnxDetector(context: Context) {
         session = environment.createSession(modelFile.absolutePath, OrtSession.SessionOptions())
     }
 
-    fun detect(bitmap: Bitmap, confThreshold: Float = 0.25f): Detection? {
+    fun detect(bitmap: Bitmap, confThreshold: Float = 0.25f): Detection? = synchronized(session) {
         val (tensor, origWidth, origHeight) = preprocess(bitmap)
 
         val results = session.run(mapOf(session.inputNames.first() to tensor))
@@ -136,7 +136,7 @@ class OnnxDetector(context: Context) {
         return outFile
     }
 
-    fun close() {
+    fun close() = synchronized(session) {
         session.close()
     }
 }
