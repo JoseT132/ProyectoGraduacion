@@ -1,0 +1,9 @@
+Agrega detector binario, evaluacion de deteccion y configura Android Studio para compilar.
+
+- Genera Gradle wrapper y configura JDK 17 para Android Studio.
+- Copia modelo ONNX y labels a assets de la app.
+- Crea dataset binario (insecto vs fondo) y entrenamiento YOLO11s.
+- Agrega scripts evaluate_det, evaluate_det_binary, predict_binary_crop y export_det_binary.
+- Actualiza README con pasos de ejecucion y nuevas metricas.
+
+Generated with Devin

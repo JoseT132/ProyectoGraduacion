@@ -33,8 +33,14 @@ El modelo de IA se basa en YOLOv11 (Ultralytics) para clasificación de 25 espec
 | `train_det.py` | Entrena un detector YOLOv11n. |
 | `predict_cls.py` | Prueba de inferencia Top-5 del clasificador. |
 | `predict_det.py` | Prueba de inferencia del detector. |
+| `prepare_det_binary.py` | Crea `dataset_det_binary/` con una sola clase "insecto". |
+| `train_det_binary.py` | Entrena un detector binario YOLO11s. |
+| `evaluate_det.py` | Evalúa mAP del detector multi-clase. |
+| `evaluate_det_binary.py` | Evalúa mAP del detector binario. |
+| `predict_binary_crop.py` | Pipeline: detecta insecto, recorta y clasifica. |
 | `export_cls.py` | Exporta el clasificador a ONNX/TFLite para el móvil. |
 | `export_det.py` | Exporta el detector a ONNX. |
+| `export_det_binary.py` | Exporta el detector binario a ONNX. |
 | `check_env.py` | Verifica PyTorch, Ultralytics y CUDA. |
 | `requirements.txt` | Dependencias del entorno virtual. |
 
@@ -44,7 +50,13 @@ El modelo de IA se basa en YOLOv11 (Ultralytics) para clasificación de 25 espec
   - Exactitud top-1 en validación: ~78.7 %
   - Exactitud top-5 en validación: ~94.3 %
   - Exactitud en test: ~75.3 %
-- **Detección**: entrenamiento disponible con `train_det.py` usando las anotaciones `.txt` de `raw_data`.
+- **Detección multi-clase** (`yolo11n`, 50 épocas):
+  - mAP@0.5 en test: 0.3392
+- **Detección binaria** (`yolo11s`, 24 épocas, clase única "insecto"):
+  - mAP@0.5 en test: 0.5638
+  - Precision: 0.5063, Recall: 0.6833
+
+> **Nota importante**: Llegar a mAP@0.5 ≥ 0.9 con el dataset actual (~3.500 imágenes y anotaciones automáticas de una sola caja) no es realista. Para acercarse a ese objetivo se requiere un dataset más grande, anotaciones más precisas y/o modelos más grandes (YOLO11m/x) con más tiempo de entrenamiento.
 
 ### Reproducir
 
@@ -115,9 +127,24 @@ copy ai_core\models_export\cls_labels.json mobile_app\app\src\main\assets\labels
 copy runs\classify\runs\classify\insect_yolov11_cls\weights\best.onnx mobile_app\app\src\main\assets\insect_classifier.onnx
 ```
 
-### Compilar
+### Requisitos previos
 
-Abre `mobile_app/` en **Android Studio** y sincroniza Gradle. Asegúrate de tener instalado Android SDK 34 y JDK 17.
+- Android Studio instalado.
+- Android SDK 34 (descárgalo desde el SDK Manager).
+- Emulador creado: **Device Manager > Create Device > Pixel 7 > API 34 x86_64**.
+
+### Paso a paso para compilar y ejecutar
+
+1. Abre `mobile_app/` en Android Studio.
+2. Android Studio detectará el wrapper. Si te pide elegir JDK, selecciona **JDK 17**.
+3. Sincroniza Gradle con el icono del elefante o `File > Sync Project with Gradle Files`.
+4. Si no aparece el botón **Run**, crea la configuración:
+   - `Run > Edit Configurations... > + > Android App`.
+   - Selecciona el módulo `:app` y la actividad `MainActivity`.
+5. Selecciona el emulador o dispositivo en la barra superior.
+6. Presiona el botón verde **Run** (Shift + F10).
+7. Si el emulador no arranca, verifica que la virtualización esté activada (Intel VT-x/AMD-V) y que tengas HAXM/WHPX instalado.
+8. Para conectar con el backend en el emulador, levanta FastAPI y deja `ApiService.kt` con `http://10.0.2.2:8000`.
 
 ### Conexión con backend
 

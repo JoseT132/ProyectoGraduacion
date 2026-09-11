@@ -16,6 +16,7 @@
 ai_core/raw_data/
 ai_core/dataset_cls/
 ai_core/dataset_det/
+ai_core/dataset_det_binary/
 runs/
 *.pt
 *.onnx
@@ -42,6 +43,8 @@ mobile_app/captures/
 mobile_app/.cxx/
 mobile_app/app/release/
 mobile_app/app/debug/
+mobile_app/jdk/
+mobile_app/*.zip
 
 # Sistema operativo
 .DS_Store
