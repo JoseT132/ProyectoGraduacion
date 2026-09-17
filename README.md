@@ -46,15 +46,17 @@ El modelo de IA se basa en YOLOv11 (Ultralytics) para clasificación de 25 espec
 
 ### Resultados actuales
 
-- **Clasificación**: entrenado con 40 épocas, resolución 224×224.
-  - Exactitud top-1 en validación: ~78.7 %
-  - Exactitud top-5 en validación: ~94.3 %
-  - Exactitud en test: ~75.3 %
+Pipeline usado por la app: detector binario (insecto / no insecto) → recorte → clasificador de 25 especies sobre el recorte.
+
+- **Clasificación sobre recortes** (`dataset_cls_crops`, 224×224):
+  - `yolo11s-cls` (modelo actual de la app): top-1 test **0.7056**, top-5 test **0.8972**
+  - `yolo11n-cls`: top-1 test 0.662, top-5 test 0.895
+  - (Clasificador anterior sobre imagen completa: top-1 test ~75.3 % — no comparable porque la app clasifica recortes, no la imagen entera)
 - **Detección multi-clase** (`yolo11n`, 50 épocas):
   - mAP@0.5 en test: 0.3392
-- **Detección binaria** (`yolo11s`, 24 épocas, clase única "insecto"):
-  - mAP@0.5 en test: 0.5638
-  - Precision: 0.5063, Recall: 0.6833
+- **Detección binaria** (clase única "insecto"):
+  - `yolo11n` (modelo actual de la app): mAP@0.5 test **0.6263**, mAP@0.5:0.95 **0.4644**, Precision 0.5733, Recall 0.6963
+  - `yolo11s` anterior (24 épocas): mAP@0.5 test 0.5638, Precision 0.5063, Recall 0.6833
 
 > **Nota importante**: Llegar a mAP@0.5 ≥ 0.9 con el dataset actual (~3.500 imágenes y anotaciones automáticas de una sola caja) no es realista. Para acercarse a ese objetivo se requiere un dataset más grande, anotaciones más precisas y/o modelos más grandes (YOLO11m/x) con más tiempo de entrenamiento.
 

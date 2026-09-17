@@ -1,26 +1,42 @@
+import argparse
 import torch
 from ultralytics import YOLO
 
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", default="dataset_cls", help="Carpeta raíz del dataset de clasificación")
+    parser.add_argument("--name", default="insect_yolov11n_cls", help="Nombre del experimento")
+    parser.add_argument("--model", default="yolo11n-cls.pt", help="Pesos base YOLO-cls")
+    parser.add_argument("--epochs", type=int, default=40)
+    parser.add_argument("--patience", type=int, default=8)
+    parser.add_argument("--imgsz", type=int, default=224)
+    parser.add_argument("--batch", type=int, default=32)
+    parser.add_argument("--workers", type=int, default=0, help="0 evita errores de multiprocessing en Windows")
+    return parser.parse_args()
+
+
 def main():
-    # 1. Detectar aceleración por GPU (RTX 4070)
+    args = parse_args()
+
     device = 0 if torch.cuda.is_available() else "cpu"
     print(f"=== INICIANDO ENTRENAMIENTO DE CLASIFICACIÓN (GPU: {device}) ===")
     if device == 0:
         print(f"GPU activa: {torch.cuda.get_device_name(0)}")
 
-    # 2. Cargar el modelo base preentrenado para clasificación
-    model = YOLO("yolo11s-cls.pt")
+    model = YOLO(args.model)
 
-    # 3. Iniciar el entrenamiento
     results = model.train(
-        data="dataset_cls",    # Carpeta raíz que contiene train/ y val/
-        epochs=40,             # 40 épocas son ideales para fine-tuning en clasificación
-        imgsz=224,             # Resolución estándar y ultra eficiente para clasificadores
-        batch=32,              
+        data=args.data,
+        epochs=args.epochs,
+        patience=args.patience,
+        imgsz=args.imgsz,
+        batch=args.batch,
         device=device,
-        workers=2,
+        workers=args.workers,
+        cache=True,
         project="runs/classify",
-        name="insect_yolov11_cls",
+        name=args.name,
         exist_ok=True,
         pretrained=True,
         optimizer="AdamW",
@@ -29,7 +45,8 @@ def main():
     )
 
     print("\n[OK] ¡Entrenamiento de clasificación completado!")
-    print("Pesos finales guardados en: runs/classify/insect_yolov11_cls/weights/best.pt")
+    print(f"Pesos finales guardados en: runs/classify/{args.name}/weights/best.pt")
+
 
 if __name__ == "__main__":
     main()

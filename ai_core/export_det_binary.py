@@ -4,7 +4,7 @@ from ultralytics import YOLO
 
 def main():
     project_root = Path(__file__).parent.parent
-    best = project_root / "runs" / "detect_binary" / "insect_yolov11s_bin" / "weights" / "best.pt"
+    best = project_root / "runs" / "detect_binary" / "insect_yolov11n_bin" / "weights" / "best.pt"
     if not best.exists():
         print(f"[ERROR] No se encontró {best}. Entrena primero con train_det_binary.py")
         return

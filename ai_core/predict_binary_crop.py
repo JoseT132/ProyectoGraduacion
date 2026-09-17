@@ -63,7 +63,7 @@ def main():
     parser = argparse.ArgumentParser(description="Detector binario + clasificador")
     parser.add_argument("--image", required=True, help="Ruta de la imagen")
     parser.add_argument("--det", default="runs/detect_binary/insect_yolov11s_bin/weights/best.pt", help="Detector binario")
-    parser.add_argument("--cls", default="runs/classify/runs/classify/insect_yolov11_cls/weights/best.pt", help="Clasificador")
+    parser.add_argument("--cls", default="runs/classify/insect_yolov11n_cls/weights/best.pt", help="Clasificador")
     parser.add_argument("--labels", default="ai_core/models_export/cls_labels.json", help="JSON de etiquetas")
     args = parser.parse_args()
     predict(args.image, args.det, args.cls, args.labels)

@@ -13,17 +13,19 @@ def main():
     project_dir = ai_core_dir.parent / "runs" / "detect_binary"
     project_dir.mkdir(parents=True, exist_ok=True)
 
-    model = YOLO("yolo11s.pt")
+    model = YOLO("yolo11n.pt")
 
     results = model.train(
         data=str(data_yaml),
-        epochs=100,
+        epochs=50,
+        patience=10,
         imgsz=640,
         batch=16,
         device=device,
-        workers=2,
+        workers=4,
+        cache=True,
         project=str(project_dir),
-        name="insect_yolov11s_bin",
+        name="insect_yolov11n_bin",
         exist_ok=True,
         pretrained=True,
         optimizer="AdamW",
@@ -31,7 +33,7 @@ def main():
         verbose=True,
     )
 
-    best = project_dir / "insect_yolov11s_bin" / "weights" / "best.pt"
+    best = project_dir / "insect_yolov11n_bin" / "weights" / "best.pt"
     print(f"\n[OK] Entrenamiento binario completado: {best}")
 
 

@@ -78,11 +78,9 @@ class OnnxClassifier(context: Context) {
 
     private fun copyAsset(context: Context, assetName: String): File {
         val outFile = File(context.cacheDir, assetName)
-        if (!outFile.exists()) {
-            context.assets.open(assetName).use { input ->
-                FileOutputStream(outFile).use { output ->
-                    input.copyTo(output)
-                }
+        context.assets.open(assetName).use { input ->
+            FileOutputStream(outFile).use { output ->
+                input.copyTo(output)
             }
         }
         return outFile

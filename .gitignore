@@ -17,6 +17,8 @@ ai_core/raw_data/
 ai_core/dataset_cls/
 ai_core/dataset_det/
 ai_core/dataset_det_binary/
+ai_core/dataset_cls_crops/
+ai_core/audit_samples/
 runs/
 *.pt
 *.onnx
