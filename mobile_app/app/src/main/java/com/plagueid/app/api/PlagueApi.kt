@@ -31,5 +31,9 @@ interface PlagueApi {
 
     @Multipart
     @POST("predict")
-    suspend fun predict(@Part image: MultipartBody.Part): Response<PredictResponse>
+    suspend fun predict(
+        @Part image: MultipartBody.Part,
+        @Query("latitude") latitude: Double? = null,
+        @Query("longitude") longitude: Double? = null
+    ): Response<PredictResponse>
 }

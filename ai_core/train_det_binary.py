@@ -22,10 +22,10 @@ def main():
         imgsz=640,
         batch=16,
         device=device,
-        workers=4,
+        workers=0,
         cache=True,
         project=str(project_dir),
-        name="insect_yolov11n_bin",
+        name="insect_yolov11n_bin_v2",
         exist_ok=True,
         pretrained=True,
         optimizer="AdamW",
@@ -33,7 +33,7 @@ def main():
         verbose=True,
     )
 
-    best = project_dir / "insect_yolov11n_bin" / "weights" / "best.pt"
+    best = project_dir / "insect_yolov11n_bin_v2" / "weights" / "best.pt"
     print(f"\n[OK] Entrenamiento binario completado: {best}")
 
 

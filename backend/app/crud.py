@@ -42,13 +42,27 @@ def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
-def create_detection(db: Session, species_id: int, user_id: int, confidence: float, top_predictions: list, image_path: str = None):
+def update_species_distribution(db: Session, slug: str, distribution):
+    species = get_species(db, slug)
+    if species is not None:
+        species.distribution = distribution
+        db.commit()
+    return species
+
+
+def create_detection(db: Session, species_id, user_id: int, confidence: float, top_predictions: list,
+                     image_path: str = None, latitude: float = None, longitude: float = None,
+                     in_expected_range: bool = None, region: str = None):
     db_detection = models.Detection(
         species_id=species_id,
         user_id=user_id,
         confidence=confidence,
         top_predictions=top_predictions,
-        image_path=image_path
+        image_path=image_path,
+        latitude=latitude,
+        longitude=longitude,
+        in_expected_range=in_expected_range,
+        region=region
     )
     db.add(db_detection)
     db.commit()

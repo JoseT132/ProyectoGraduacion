@@ -18,6 +18,7 @@ class SpeciesBase(BaseModel):
     threshold: Optional[str] = None
     references: Optional[str] = None
     image_url: Optional[str] = None
+    distribution: Optional[List[str]] = None
 
 
 class SpeciesCreate(SpeciesBase):
@@ -45,6 +46,9 @@ class PredictResponse(BaseModel):
     confidence: float
     top_predictions: List[Prediction]
     ficha: Optional[SpeciesResponse] = None
+    is_unknown: bool = False
+    in_expected_range: Optional[bool] = None
+    region: Optional[str] = None
 
 
 class UserBase(BaseModel):
@@ -103,6 +107,10 @@ class DetectionBase(BaseModel):
     confidence: Optional[float] = None
     top_predictions: Optional[List[Prediction]] = None
     image_path: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    in_expected_range: Optional[bool] = None
+    region: Optional[str] = None
     created_at: Optional[datetime] = None
 
 

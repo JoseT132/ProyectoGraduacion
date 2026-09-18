@@ -5,9 +5,9 @@ from ultralytics import YOLO
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", default="dataset_cls", help="Carpeta raíz del dataset de clasificación")
-    parser.add_argument("--name", default="insect_yolov11n_cls", help="Nombre del experimento")
-    parser.add_argument("--model", default="yolo11n-cls.pt", help="Pesos base YOLO-cls")
+    parser.add_argument("--data", default="dataset_cls_crops", help="Carpeta raíz del dataset de clasificación")
+    parser.add_argument("--name", default="insect_yolov11s_cls_crops_v2", help="Nombre del experimento")
+    parser.add_argument("--model", default="yolo11s-cls.pt", help="Pesos base YOLO-cls")
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--patience", type=int, default=8)
     parser.add_argument("--imgsz", type=int, default=224)

@@ -14,6 +14,7 @@ class DetectionAdapter(private val items: List<DetectionRecord>) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val speciesText: TextView = itemView.findViewById(R.id.speciesText)
         val confidenceText: TextView = itemView.findViewById(R.id.confidenceText)
+        val locationText: TextView = itemView.findViewById(R.id.locationText)
         val dateText: TextView = itemView.findViewById(R.id.dateText)
     }
 
@@ -26,6 +27,13 @@ class DetectionAdapter(private val items: List<DetectionRecord>) :
         val item = items[position]
         holder.speciesText.text = item.species?.scientificName ?: "Especie desconocida"
         holder.confidenceText.text = "Confianza: ${"%.2f".format((item.confidence ?: 0f) * 100)}%"
+        holder.locationText.text = when {
+            item.latitude == null || item.longitude == null -> "Ubicación: no registrada"
+            item.inExpectedRange == false ->
+                "Ubicación: ${"%.4f".format(item.latitude)}, ${"%.4f".format(item.longitude)} — fuera de rango conocido"
+            else ->
+                "Ubicación: ${"%.4f".format(item.latitude)}, ${"%.4f".format(item.longitude)}${item.region?.let { " ($it)" } ?: ""}"
+        }
         holder.dateText.text = item.createdAt ?: "—"
     }
 

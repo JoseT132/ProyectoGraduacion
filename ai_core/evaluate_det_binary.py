@@ -5,7 +5,11 @@ from ultralytics import YOLO
 
 def main():
     project_root = Path(__file__).parent.parent
-    best = project_root / "runs" / "detect_binary" / "insect_yolov11n_bin" / "weights" / "best.pt"
+    candidates = [
+        project_root / "runs" / "detect_binary" / "insect_yolov11n_bin_v2" / "weights" / "best.pt",
+        project_root / "runs" / "detect_binary" / "insect_yolov11n_bin" / "weights" / "best.pt",
+    ]
+    best = next((c for c in candidates if c.exists()), candidates[0])
     data = project_root / "ai_core" / "dataset_det_binary" / "data.yaml"
 
     if not best.exists():

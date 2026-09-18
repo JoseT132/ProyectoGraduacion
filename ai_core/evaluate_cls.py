@@ -6,7 +6,7 @@ from ultralytics import YOLO
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="runs/classify/runs/classify/insect_yolov11n_cls_crops/weights/best.pt")
+    parser.add_argument("--model", default="runs/classify/runs/classify/insect_yolov11s_cls_crops_v3/weights/best.pt")
     parser.add_argument("--data", default="dataset_cls_crops")
     return parser.parse_args()
 

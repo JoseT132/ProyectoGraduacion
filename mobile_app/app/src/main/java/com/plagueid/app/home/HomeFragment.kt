@@ -2,12 +2,15 @@ package com.plagueid.app.home
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -49,6 +52,12 @@ class HomeFragment : Fragment() {
     private var currentPhotoUri: Uri? = null
     private var selectedBitmap: Bitmap? = null
     private var lastSlug: String? = null
+
+    private val UNKNOWN_THRESHOLD = 0.40f
+
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { /* Si se niega, se envía la detección sin coordenadas */ }
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -189,6 +198,7 @@ class HomeFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
         binding.fichaButton.visibility = View.GONE
+        ensureLocationPermission()
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
             try {
@@ -207,16 +217,26 @@ class HomeFragment : Fragment() {
                 val crop = cropBitmap(bitmap, detection)
                 val predictions = classifier.classify(crop)
                 val top = predictions.first()
-                lastSlug = top.first
+                val isUnknown = top.second < UNKNOWN_THRESHOLD
+                lastSlug = if (isUnknown) null else top.first
 
-                sendDetectionToBackend(crop)
+                val location = getLastLocation()
+                sendDetectionToBackend(crop, location)
 
                 val overlay = drawDetection(bitmap, detection)
                 val message = buildString {
-                    appendLine("Especie: ${top.first.replace("_", " ")}")
-                    appendLine("Confianza: ${(top.second * 100).format(2)}%")
-                    appendLine()
+                    if (isUnknown) {
+                        appendLine(getString(R.string.unknown_species))
+                        appendLine()
+                    } else {
+                        appendLine("Especie: ${top.first.replace("_", " ")}")
+                        appendLine("Confianza: ${(top.second * 100).format(2)}%")
+                        appendLine()
+                    }
                     appendLine("Detección: ${(detection.confidence * 100).format(2)}%")
+                    if (location != null) {
+                        appendLine("Ubicación: ${"%.4f".format(location.latitude)}, ${"%.4f".format(location.longitude)}")
+                    }
                     appendLine("Top 5:")
                     predictions.forEachIndexed { i, p ->
                         appendLine("${i + 1}. ${p.first.replace("_", " ")}: ${(p.second * 100).format(2)}%")
@@ -228,7 +248,7 @@ class HomeFragment : Fragment() {
                         it.progressBar.visibility = View.GONE
                         it.imagePreview.setImageBitmap(overlay)
                         it.resultText.text = message
-                        it.fichaButton.visibility = View.VISIBLE
+                        it.fichaButton.visibility = if (isUnknown) View.GONE else View.VISIBLE
                     }
                 }
             } catch (e: OutOfMemoryError) {
@@ -245,7 +265,30 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun sendDetectionToBackend(bitmap: Bitmap) {
+    private fun ensureLocationPermission() {
+        val ctx = context ?: return
+        if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun getLastLocation(): Location? {
+        val ctx = context ?: return null
+        if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            return null
+        }
+        val lm = ctx.getSystemService(Context.LOCATION_SERVICE) as? LocationManager ?: return null
+        return lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            ?: lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+    }
+
+    private fun sendDetectionToBackend(bitmap: Bitmap, location: Location?) {
         val appContext = context?.applicationContext ?: return
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -253,7 +296,24 @@ class HomeFragment : Fragment() {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
                 val requestBody = RequestBody.create("image/jpeg".toMediaType(), baos.toByteArray())
                 val part = MultipartBody.Part.createFormData("file", "detection.jpg", requestBody)
-                ApiClient.getApi(appContext).predict(part)
+                val response = ApiClient.getApi(appContext).predict(
+                    part,
+                    latitude = location?.latitude,
+                    longitude = location?.longitude
+                )
+                val body = response.body()
+                if (body?.inExpectedRange != null) {
+                    val verdict = if (body.inExpectedRange == true) {
+                        "Distribución: consistente con el rango conocido${body.region?.let { " ($it)" } ?: ""}"
+                    } else {
+                        "Distribución: FUERA del rango geográfico conocido${body.region?.let { " (región: $it)" } ?: ""}"
+                    }
+                    withContext(Dispatchers.Main) {
+                        _binding?.let {
+                            it.resultText.text = "${it.resultText.text}\n$verdict"
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 // Si el backend no está disponible, no bloqueamos la experiencia local.
             }

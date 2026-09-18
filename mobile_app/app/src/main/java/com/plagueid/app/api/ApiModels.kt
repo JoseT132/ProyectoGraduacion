@@ -38,6 +38,10 @@ data class DetectionRecord(
     val confidence: Float?,
     @SerializedName("top_predictions") val topPredictions: List<PredictedItem>?,
     @SerializedName("image_path") val imagePath: String?,
+    val latitude: Double?,
+    val longitude: Double?,
+    @SerializedName("in_expected_range") val inExpectedRange: Boolean?,
+    val region: String?,
     @SerializedName("created_at") val createdAt: String?
 )
 
@@ -46,7 +50,10 @@ data class PredictResponse(
     val slug: String,
     val confidence: Float,
     @SerializedName("top_predictions") val topPredictions: List<PredictedItem>,
-    val ficha: Species?
+    val ficha: Species?,
+    @SerializedName("is_unknown") val isUnknown: Boolean = false,
+    @SerializedName("in_expected_range") val inExpectedRange: Boolean? = null,
+    val region: String? = null
 )
 
 data class PredictedItem(

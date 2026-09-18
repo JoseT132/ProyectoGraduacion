@@ -1,0 +1,237 @@
+{
+  "Agrotis_ipsilon": {
+    "images": 149,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 149
+  },
+  "Aleurocanthus_woglumi": {
+    "images": 119,
+    "duplicates": 59,
+    "corrupt": 0,
+    "placeholder": 1,
+    "relabeled": 1,
+    "unlabeled": 0,
+    "real": 59
+  },
+  "Aleurodicus_dispersus": {
+    "images": 150,
+    "duplicates": 48,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 102
+  },
+  "Aphis_craccivora": {
+    "images": 149,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 149
+  },
+  "Aphis_gossypii": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 2,
+    "relabeled": 2,
+    "unlabeled": 0,
+    "real": 148
+  },
+  "Bemisia_argentifolii": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Bemisia_tabaci": {
+    "images": 150,
+    "duplicates": 64,
+    "corrupt": 0,
+    "placeholder": 2,
+    "relabeled": 2,
+    "unlabeled": 0,
+    "real": 84
+  },
+  "Brevicoryne_brassicae": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Chinavia_hilaris": {
+    "images": 149,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 149
+  },
+  "Coccinella_septempunctata": {
+    "images": 149,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 149
+  },
+  "Coleomegilla_maculata": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Cycloneda_sanguinea": {
+    "images": 149,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 149
+  },
+  "Euschistus_servus": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Halyomorpha_halys": {
+    "images": 149,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 149
+  },
+  "Harmonia_axyridis": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Helicoverpa_zea": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Hippodamia_convergens": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Macrosiphum_euphorbiae": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 1,
+    "relabeled": 0,
+    "unlabeled": 1,
+    "real": 149
+  },
+  "Murgantia_histrionica": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Myzus_persicae": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Nezara_viridula": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 1,
+    "relabeled": 0,
+    "unlabeled": 1,
+    "real": 149
+  },
+  "Spodoptera_exigua": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Spodoptera_frugiperda": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Trialeurodes_vaporariorum": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "Trichoplusia_ni": {
+    "images": 150,
+    "duplicates": 0,
+    "corrupt": 0,
+    "placeholder": 0,
+    "relabeled": 0,
+    "unlabeled": 0,
+    "real": 150
+  },
+  "_totals": {
+    "images": 3713,
+    "duplicates": 171,
+    "corrupt": 0,
+    "placeholder": 7,
+    "relabeled": 5,
+    "unlabeled": 2,
+    "real": 3535
+  },
+  "_dry_run": false
+}

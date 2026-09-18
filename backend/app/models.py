@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Float, DateTime, Date, ForeignKey, JSON
+from sqlalchemy import Column, Integer, String, Text, Float, Boolean, DateTime, Date, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 from datetime import datetime, date
 from .database import Base
@@ -22,6 +22,7 @@ class Species(Base):
     threshold = Column(Text)
     references = Column(Text)
     image_url = Column(String)
+    distribution = Column(JSON)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     detections = relationship("Detection", back_populates="species")
@@ -56,11 +57,15 @@ class Detection(Base):
     __tablename__ = "detections"
 
     id = Column(Integer, primary_key=True, index=True)
-    species_id = Column(Integer, ForeignKey("species.id"))
+    species_id = Column(Integer, ForeignKey("species.id"), nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     confidence = Column(Float)
     top_predictions = Column(JSON)
     image_path = Column(String)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    in_expected_range = Column(Boolean, nullable=True)
+    region = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     species = relationship("Species", back_populates="detections")

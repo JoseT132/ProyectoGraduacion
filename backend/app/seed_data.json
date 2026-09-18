@@ -13,7 +13,10 @@
     "chemical_control": "Aplicar insecticidas al suelo o en la base del tallo cuando se detectan daños. Prefirir formulaciones de Bacillus thuringiensis en estados tempranos; alternar con ingredientes activos como clorpirifos o lambda-cialotrina según etiqueta.",
     "threshold": "1-2 larvas por metro cuadrado o presencia de daño reciente en plántulas.",
     "references": "UMG, MAGA, UC IPM, EPPO",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Aleurocanthus_woglumi",
@@ -29,7 +32,14 @@
     "chemical_control": "Aplicar insecticidas sistémicos (imidacloprid, tiametoxam) o aceites hortícolas cuando la población supera umbrales; alternar con insecticidas biológicos.",
     "threshold": "5-10 ninfas por hoja o detección de primeros adultos en trampas amarillas.",
     "references": "UMG, MAGA, ICA, EPPO",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Asia",
+      "Norteamérica",
+      "Centroamérica y Caribe",
+      "Sudamérica",
+      "África"
+    ]
   },
   {
     "slug": "Aleurodicus_dispersus",
@@ -45,7 +55,10 @@
     "chemical_control": "Insecticidas botánicos (aceite de nim, jabón potásico) e insecticidas sistémicos como acetamiprid; usar aceites minerales en ninfas.",
     "threshold": "10-15 ninfas o adultos por hoja joven o presencia de melaza/fumagina.",
     "references": "UMG, MAGA, IICA",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Aphis_craccivora",
@@ -61,7 +74,10 @@
     "chemical_control": "Insecticidas sistémicos o contacto como acetamiprid, imidacloprid, pirimicarb; alternar con jabón potásico y aceite de nim.",
     "threshold": "20-30 pulgones por planta o 10 % de plantas con colonias activas.",
     "references": "UMG, MAGA, FAO",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Aphis_gossypii",
@@ -77,7 +93,10 @@
     "chemical_control": "Aplicar insecticidas selectivos cuando el 20% de plantas presentan colonias; preferir insecticidas biológicos (jabón potásico, aceite de nim) y alternar modos de acción.",
     "threshold": "20 % de plantas infestadas o 10 pulgones por hoja en brotes.",
     "references": "UMG, MAGA, Cotton IPM",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Bemisia_argentifolii",
@@ -93,7 +112,10 @@
     "chemical_control": "Insecticidas sistémicos (imidacloprid, tiametoxam, dinotefurán) o piretroides; alternar con insecticidas de diferente modo de acción para evitar resistencia.",
     "threshold": "0.5 ninfas/cm2 de hoja o 5 adultos por trampas amarillas en campo abierto.",
     "references": "UMG, MAGA, USDA-ARS",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Bemisia_tabaci",
@@ -109,7 +131,10 @@
     "chemical_control": "Insecticidas sistémicos y translaminares (acetamiprid, pymetrozina, buprofezina, spiromesifen). Resistencia es común; alternar químicos.",
     "threshold": "5-10 ninfas por hoja o captura de adultos en trampas amarillas en invernadero; 20 % de plantas infestadas al aire libre.",
     "references": "UMG, MAGA, AVRDC, CABI",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Brevicoryne_brassicae",
@@ -125,7 +150,10 @@
     "chemical_control": "Jabón potásico, aceite de nim, pirimicarb, acetamiprid. Aplicar cuando se supera el umbral para evitar impacto en parasitoides.",
     "threshold": "10-15 % de plantas con colonias o 5 pulgones por planta joven.",
     "references": "UMG, MAGA, UC IPM",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Chinavia_hilaris",
@@ -141,7 +169,12 @@
     "chemical_control": "Aplicar insecticidas cuando se supera el umbral en etapas sensibles; piretroides, neonicotinoides y organofosforados según etiqueta.",
     "threshold": "1-2 ninfas/adultos por metro lineal en soya; 5 % de vainas dañadas.",
     "references": "UMG, MAGA, EMBRAPA",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Norteamérica",
+      "Centroamérica y Caribe",
+      "Sudamérica"
+    ]
   },
   {
     "slug": "Coccinella_septempunctata",
@@ -157,7 +190,12 @@
     "chemical_control": "No aplica. Si se usa, seleccionar insecticidas selectivos para no afectarla.",
     "threshold": "Mantener al menos 1 larva/adulto por planta o 5-10 por m2 como indicador de control biológico.",
     "references": "UMG, MAGA, IOBC",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Europa",
+      "Asia",
+      "Norteamérica"
+    ]
   },
   {
     "slug": "Coleomegilla_maculata",
@@ -173,7 +211,12 @@
     "chemical_control": "No aplica. Proteger con insecticidas selectivos.",
     "threshold": "Presencia constante en el cultivo indica equilibrio biológico.",
     "references": "UMG, MAGA, University of Florida",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Norteamérica",
+      "Centroamérica y Caribe",
+      "Sudamérica"
+    ]
   },
   {
     "slug": "Cycloneda_sanguinea",
@@ -189,7 +232,12 @@
     "chemical_control": "No aplica.",
     "threshold": "Su detección es indicador de presencia de presas y salud del agroecosistema.",
     "references": "UMG, MAGA",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Norteamérica",
+      "Centroamérica y Caribe",
+      "Sudamérica"
+    ]
   },
   {
     "slug": "Euschistus_servus",
@@ -205,7 +253,11 @@
     "chemical_control": "Piretroides, neonicotinoides y productos biológicos (Beauveria bassiana) cuando se supera el umbral.",
     "threshold": "1-2 adultos o ninfas por metro lineal en soya; daño visible en semillas.",
     "references": "UMG, MAGA, Mississippi State Extension",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Norteamérica",
+      "Centroamérica y Caribe"
+    ]
   },
   {
     "slug": "Halyomorpha_halys",
@@ -221,7 +273,13 @@
     "chemical_control": "Aplicaciones dirigidas en fructificación con piretroides, neonicotinoides o insecticidas botánicos; alternar modos de acción.",
     "threshold": "1-2 adultos/trampa/semana o 5 % de frutos dañados.",
     "references": "UMG, MAGA, USDA-APHIS",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Asia",
+      "Norteamérica",
+      "Europa",
+      "Sudamérica"
+    ]
   },
   {
     "slug": "Harmonia_axyridis",
@@ -237,7 +295,10 @@
     "chemical_control": "No aplica en campo. Para hogares usar métodos mecánicos.",
     "threshold": "Su presencia indica control biológico activo.",
     "references": "UMG, MAGA, CABI",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Helicoverpa_zea",
@@ -253,7 +314,12 @@
     "chemical_control": "Aplicar insecticidas cuando se detectan larvas jóvenes en 5-10 % de plantas; usar Bt, espinosad, indoxacarb, metomilo.",
     "threshold": "5-10 larvas por 100 plantas o 5 % de mazorcas/frutos infestados.",
     "references": "UMG, MAGA, UC IPM",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Norteamérica",
+      "Centroamérica y Caribe",
+      "Sudamérica"
+    ]
   },
   {
     "slug": "Hippodamia_convergens",
@@ -269,7 +335,11 @@
     "chemical_control": "No aplica. Usar insecticidas selectivos si es necesario.",
     "threshold": "Presencia constante reduce poblaciones de pulgones. Mantener poblaciones de enemigos naturales.",
     "references": "UMG, MAGA, Syngenta",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Norteamérica",
+      "Centroamérica y Caribe"
+    ]
   },
   {
     "slug": "Macrosiphum_euphorbiae",
@@ -285,7 +355,10 @@
     "chemical_control": "Insecticidas sistémicos de semilla (imidacloprid, tiametoxam); aplicaciones foliares con pirimicarb, aceite mineral o jabón potásico.",
     "threshold": "10-20 pulgones por hoja o 5 % de plantas con colonias en brotes.",
     "references": "UMG, MAGA, Potato IPM",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Murgantia_histrionica",
@@ -301,7 +374,11 @@
     "chemical_control": "Aplicar insecticidas cuando se detectan 1-2 adultos/ninfas por planta; piretroides, neonicotinoides, insecticidas botánicos.",
     "threshold": "1 adulto/ninfa por planta joven o 5 % de hojas con daño.",
     "references": "UMG, MAGA, Virginia Tech",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Norteamérica",
+      "Centroamérica y Caribe"
+    ]
   },
   {
     "slug": "Myzus_persicae",
@@ -317,7 +394,10 @@
     "chemical_control": "Insecticidas sistémicos (imidacloprid, acetamiprid), piretrinas, jabón potásico y aceite de nim. Rotar modos de acción por alta resistencia.",
     "threshold": "10-20 pulgones por hoja o 10 % de plantas con colonias; monitoreo de virus.",
     "references": "UMG, MAGA, Rothamsted",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Nezara_viridula",
@@ -333,7 +413,10 @@
     "chemical_control": "Aplicar insecticidas en etapas críticas de llenado de vainas/frutos; piretroides, neonicotinoides y productos biológicos.",
     "threshold": "1-2 ninfas/adultos por metro lineal o 5 % de vainas dañadas en soya.",
     "references": "UMG, MAGA, EMBRAPA",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Spodoptera_exigua",
@@ -349,7 +432,10 @@
     "chemical_control": "Aplicar insecticidas al detectar larvas jóvenes en 5-10 % de plantas; Bt, espinosad, metomilo, clorpirifos según etiqueta.",
     "threshold": "5-10 larvas pequeñas por metro cuadrado o 10 % de plantas con daño foliar.",
     "references": "UMG, MAGA, UC IPM",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Spodoptera_frugiperda",
@@ -365,7 +451,15 @@
     "chemical_control": "Aplicar granulados de Bt o insecticidas dirigidos al cogollo cuando se detectan 2-3 larvas/planta joven; usar piretroides, clorpirifos, espinosad.",
     "threshold": "2-3 larvas por planta joven o 10 % de plantas con daño en cogollo.",
     "references": "UMG, MAGA, FAO Fall Armyworm",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Norteamérica",
+      "Centroamérica y Caribe",
+      "Sudamérica",
+      "África",
+      "Asia",
+      "Oceanía"
+    ]
   },
   {
     "slug": "Trialeurodes_vaporariorum",
@@ -381,7 +475,10 @@
     "chemical_control": "Insecticidas biológicos (jabón potásico, aceite de nim); insecticidas sistémicos (imidacloprid, acetamiprid) e IGR (buprofezina, pyriproxyfen) en casos graves.",
     "threshold": "5 ninfas por hoja media o captura de 5 adultos/trampa amarilla/semana en invernadero.",
     "references": "UMG, MAGA, Koppert",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   },
   {
     "slug": "Trichoplusia_ni",
@@ -397,6 +494,9 @@
     "chemical_control": "Aplicar Bt o insecticidas cuando hay 1-2 larvas por planta; espinosad, metomilo, indoxacarb según etiqueta.",
     "threshold": "1-2 larvas por planta o 10 % de plantas con daño foliar en brócoli/coltiflor.",
     "references": "UMG, MAGA, UC IPM",
-    "image_url": null
+    "image_url": null,
+    "distribution": [
+      "Cosmopolita"
+    ]
   }
 ]

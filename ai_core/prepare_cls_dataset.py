@@ -50,7 +50,7 @@ def prepare_cls_dataset():
                 shutil.copy(img_path, os.path.join(dest_dir, filename))
                 
         total_processed += n_imgs
-        print(f"✓ {species}: {n_imgs} imágenes divididas (Train: {len(splits['train'])}, Val: {len(splits['val'])}, Test: {len(splits['test'])})")
+        print(f"[OK] {species}: {n_imgs} imágenes divididas (Train: {len(splits['train'])}, Val: {len(splits['val'])}, Test: {len(splits['test'])})")
 
     print(f"\n[OK] ¡Éxito! {total_processed} imágenes organizadas en '{CLS_DATASET_DIR}/'")
 
