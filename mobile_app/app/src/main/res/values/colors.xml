@@ -8,4 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="surface">#FFFFFFFF</color>
     <color name="on_surface">#FF1B1B1B</color>
+    <color name="text_muted">#FF5F6B62</color>
+    <color name="dex_frame">#FF263238</color>
+    <color name="dex_screen">#FFF9FBE7</color>
+    <color name="accent_amber">#FFFFB300</color>
+    <color name="accent_blue">#FF0277BD</color>
+    <color name="status_gray">#FF9E9E9E</color>
 </resources>

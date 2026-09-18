@@ -1,7 +1,6 @@
 package com.plagueid.app.home
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -25,7 +24,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.plagueid.app.R
-import com.plagueid.app.Species
+import com.plagueid.app.SpeciesActivity
 import com.plagueid.app.api.ApiClient
 import com.plagueid.app.databinding.FragmentHomeBinding
 import com.plagueid.app.ml.Detection
@@ -33,7 +32,7 @@ import com.plagueid.app.ml.OnnxClassifier
 import com.plagueid.app.ml.OnnxDetector
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,7 +52,7 @@ class HomeFragment : Fragment() {
     private var selectedBitmap: Bitmap? = null
     private var lastSlug: String? = null
 
-    private val UNKNOWN_THRESHOLD = 0.40f
+    private val UNKNOWN_THRESHOLD = 0.80f
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -140,6 +139,8 @@ class HomeFragment : Fragment() {
                     if (_binding == null) return@withContext
                     selectedBitmap = bitmap
                     binding.imagePreview.setImageBitmap(bitmap)
+                    binding.entryName.text = getString(R.string.dex_entry_default)
+                    binding.entryChip.visibility = View.GONE
                     binding.resultText.text = getString(R.string.hint)
                     binding.fichaButton.visibility = View.GONE
                     lastSlug = null
@@ -228,10 +229,6 @@ class HomeFragment : Fragment() {
                     if (isUnknown) {
                         appendLine(getString(R.string.unknown_species))
                         appendLine()
-                    } else {
-                        appendLine("Especie: ${top.first.replace("_", " ")}")
-                        appendLine("Confianza: ${(top.second * 100).format(2)}%")
-                        appendLine()
                     }
                     appendLine("Detección: ${(detection.confidence * 100).format(2)}%")
                     if (location != null) {
@@ -247,6 +244,13 @@ class HomeFragment : Fragment() {
                     _binding?.let {
                         it.progressBar.visibility = View.GONE
                         it.imagePreview.setImageBitmap(overlay)
+                        it.entryName.text = if (isUnknown) {
+                            getString(R.string.unknown_entry)
+                        } else {
+                            top.first.replace("_", " ")
+                        }
+                        it.entryChip.text = "${(top.second * 100).format(1)}%"
+                        it.entryChip.visibility = View.VISIBLE
                         it.resultText.text = message
                         it.fichaButton.visibility = if (isUnknown) View.GONE else View.VISIBLE
                     }
@@ -294,7 +298,7 @@ class HomeFragment : Fragment() {
             try {
                 val baos = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
-                val requestBody = RequestBody.create("image/jpeg".toMediaType(), baos.toByteArray())
+                val requestBody = baos.toByteArray().toRequestBody("image/jpeg".toMediaType())
                 val part = MultipartBody.Part.createFormData("file", "detection.jpg", requestBody)
                 val response = ApiClient.getApi(appContext).predict(
                     part,
@@ -351,43 +355,10 @@ class HomeFragment : Fragment() {
 
     private fun loadFicha() {
         val slug = lastSlug ?: return
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    ApiClient.getApi(requireContext()).getSpecies(slug)
-                }
-                val species = response.body()
-                if (species != null) {
-                    showFichaDialog(species)
-                } else {
-                    Toast.makeText(requireContext(), R.string.ficha_error, Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun showFichaDialog(species: Species) {
-        val message = buildString {
-            appendLine("Nombre común: ${species.commonName ?: "—"}")
-            appendLine("Familia: ${species.family ?: "—"}")
-            appendLine()
-            appendLine("Descripción: ${species.description ?: "—"}")
-            appendLine()
-            appendLine("Daños: ${species.damage ?: "—"}")
-            appendLine()
-            appendLine("Control biológico: ${species.biologicalControl ?: "—"}")
-            appendLine("Control cultural: ${species.culturalControl ?: "—"}")
-            appendLine("Control químico: ${species.chemicalControl ?: "—"}")
-            appendLine("Umbral: ${species.threshold ?: "—"}")
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(species.scientificName)
-            .setMessage(message)
-            .setPositiveButton("Cerrar", null)
-            .show()
+        startActivity(
+            android.content.Intent(requireContext(), SpeciesActivity::class.java)
+                .putExtra(SpeciesActivity.EXTRA_SLUG, slug)
+        )
     }
 
     private fun Float.format(digits: Int): String {

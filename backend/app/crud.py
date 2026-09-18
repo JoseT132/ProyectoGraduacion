@@ -34,10 +34,6 @@ def get_user_by_google_id(db: Session, google_id: str):
     return db.query(models.User).filter(models.User.google_id == google_id).first()
 
 
-def get_user_by_facebook_id(db: Session, facebook_id: str):
-    return db.query(models.User).filter(models.User.facebook_id == facebook_id).first()
-
-
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 

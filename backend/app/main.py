@@ -9,7 +9,7 @@ from . import auth, regions
 from .database import engine, get_db
 from .services.predict import predict_image
 
-UNKNOWN_THRESHOLD = 0.40
+UNKNOWN_THRESHOLD = 0.80
 
 
 def _migrate(engine):

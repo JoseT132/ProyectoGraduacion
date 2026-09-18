@@ -38,7 +38,6 @@ class User(Base):
     password_hash = Column(String, nullable=True)
     birth_date = Column(Date, nullable=True)
     google_id = Column(String, unique=True, index=True, nullable=True)
-    facebook_id = Column(String, unique=True, index=True, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     detections = relationship("Detection", back_populates="user")

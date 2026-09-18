@@ -53,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener { doLogin() }
         binding.registerLink.setOnClickListener { startActivity(Intent(this, RegisterActivity::class.java)) }
         binding.googleButton.setOnClickListener { doGoogleSignIn() }
-        binding.facebookButton.setOnClickListener { doFacebookSignIn() }
     }
 
     private fun doLogin() {
@@ -101,15 +100,6 @@ class LoginActivity : AppCompatActivity() {
             .build()
         val client = GoogleSignIn.getClient(this, gso)
         googleLauncher.launch(client.signInIntent)
-    }
-
-    private fun doFacebookSignIn() {
-        val appId = getString(R.string.facebook_app_id)
-        if (appId.isBlank()) {
-            Toast.makeText(this, "Facebook OAuth no está configurado", Toast.LENGTH_SHORT).show()
-            return
-        }
-        Toast.makeText(this, "Facebook no está implementado aún. Configura el SDK con tu App ID.", Toast.LENGTH_LONG).show()
     }
 
     private fun sendGoogleToken(idToken: String) {

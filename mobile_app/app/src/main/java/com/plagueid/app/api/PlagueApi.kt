@@ -17,9 +17,6 @@ interface PlagueApi {
     @POST("auth/google")
     suspend fun loginGoogle(@Body request: OAuthRequest): Response<TokenResponse>
 
-    @POST("auth/facebook")
-    suspend fun loginFacebook(@Body request: OAuthRequest): Response<TokenResponse>
-
     @GET("auth/me")
     suspend fun getMe(): Response<UserProfile>
 

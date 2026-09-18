@@ -58,6 +58,7 @@ Pipeline usado por la app: detector binario (insecto / no insecto) → recorte �
 - **Detección binaria** (clase única "insecto"):
   - `yolo11n` v2 con etiquetas curadas (modelo actual de la app): mAP@0.5 test **0.6737**, mAP@0.5:0.95 **0.5107**, Precision 0.6808, Recall 0.6318
 
+> **Umbral de "desconocido"**: `calibrate_threshold.py` mide la confianza top-1 en el test set (mediana 0.997 en aciertos vs 0.725 en errores). El umbral elegido es **0.80**: retiene el 71 % de las entradas con 86 % de precisión y rechaza el 65 % de las predicciones erróneas. Se aplica tanto en la app como en `/predict`.
 
 ### Reproducir
 
@@ -105,7 +106,32 @@ La base de datos se crea automáticamente y se carga con las 25 fichas técnicas
 ```bash
 DATABASE_URL=sqlite:///./backend.db      # Por defecto
 # DATABASE_URL=postgresql://user:pass@localhost/plagueid
+GOOGLE_CLIENT_ID=                        # Client ID web de Google Cloud (ver sección OAuth)
 ```
+
+### Configurar Google OAuth
+
+El login con Google ya está implementado (`POST /auth/google` en el backend y el botón "Continuar con Google" en la app). Para activarlo se necesitan credenciales de **Google Cloud Console**:
+
+1. Entra a <https://console.cloud.google.com/> y crea un proyecto (o usa uno existente).
+2. En **APIs y servicios → Pantalla de consentimiento de OAuth**, configura el consentimiento (tipo "Externo", nombre de la app, correo de soporte).
+3. En **APIs y servicios → Credenciales → Crear credenciales → ID de cliente de OAuth**:
+   - **Tipo: Android** — nombre cualquiera, nombre de paquete `com.plagueid.app` y la huella **SHA-1** de tu keystore. Para el keystore de debug:
+     ```powershell
+     keytool -list -v -keystore "$env:USERPROFILE\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+     ```
+     Copia el valor `SHA1` que imprime.
+   - **Tipo: Aplicación web** — nombre cualquiera, sin URIs de redirección. Copia el **Client ID** generado (formato `xxxx.apps.googleusercontent.com`).
+4. Pega el **Client ID web** en dos lugares:
+   - `mobile_app/app/src/main/res/values/strings.xml` → `<string name="google_web_client_id">...</string>`
+   - Variable de entorno del backend:
+     ```powershell
+     $env:GOOGLE_CLIENT_ID="xxxx.apps.googleusercontent.com"
+     ..\ai_core\venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+     ```
+5. Recompila la app. El botón de Google abrirá el selector de cuentas y el backend verificará el `idToken` antes de emitir el JWT.
+
+> Si `google_web_client_id` está vacío, el botón muestra "Google OAuth no está configurado" y el endpoint responde 501.
 
 ## 3. Aplicación móvil (`mobile_app/`)
 

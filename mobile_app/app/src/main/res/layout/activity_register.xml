@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_account"
+            android:textColor="@color/leaf_dark"
             android:textSize="28sp"
             android:textStyle="bold"
             android:layout_marginTop="24dp" />
@@ -34,6 +35,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/text_muted"
                 android:id="@+id/firstNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,6 +50,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/text_muted"
                 android:id="@+id/lastNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,6 +65,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/text_muted"
                 android:id="@+id/birthDateInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,6 +81,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/text_muted"
                 android:id="@+id/emailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,6 +98,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/text_muted"
                 android:id="@+id/passwordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

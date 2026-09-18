@@ -17,6 +17,7 @@ data class Species(
     @SerializedName("chemical_control") val chemicalControl: String?,
     val threshold: String?,
     val references: String?,
+    val distribution: List<String>?,
     @SerializedName("image_url") val imageUrl: String?,
     @SerializedName("created_at") val createdAt: String?
 )

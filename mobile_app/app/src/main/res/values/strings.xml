@@ -13,6 +13,8 @@
     <string name="no_insect_detected">No se detectó ningún insecto. Intenta con otra foto.</string>
     <string name="ficha_error">No se pudo cargar la ficha técnica</string>
     <string name="unknown_species">No identificado con certeza — posible especie fuera del catálogo</string>
+    <string name="dex_entry_default">Registro de insecto</string>
+    <string name="unknown_entry">Especie desconocida</string>
     <string name="location_permission">Se requiere permiso de ubicación para registrar la zona de la detección</string>
     <string name="location_unavailable">Ubicación no disponible</string>
 
@@ -26,7 +28,6 @@
     <string name="last_name">Apellido</string>
     <string name="birth_date_hint">Fecha de nacimiento (DD/MM/YYYY)</string>
     <string name="login_google">Continuar con Google</string>
-    <string name="login_facebook">Continuar con Facebook</string>
     <string name="no_account">¿No tienes cuenta? Regístrate</string>
     <string name="has_account">¿Ya tienes cuenta? Inicia sesión</string>
     <string name="title_home">Inicio</string>
@@ -36,6 +37,7 @@
     <string name="age_format">Edad: %1$s años</string>
     <string name="no_history">No tienes detecciones aún</string>
 
+    <!-- Web Client ID del proyecto en Google Cloud Console (tipo "Aplicación web").
+         Ver README: sección "Configurar Google OAuth". -->
     <string name="google_web_client_id" translatable="false"></string>
-    <string name="facebook_app_id" translatable="false"></string>
 </resources>

@@ -12,34 +12,118 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+        <!-- Visor tipo Pokédex: marco oscuro + pantalla interior -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="18dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="@color/dex_frame">
 
-            <ImageView
-                android:id="@+id/imagePreview"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:scaleType="fitCenter"
-                android:background="@color/leaf_pale"
-                android:src="@drawable/ic_leaf_light"
-                android:contentDescription="@string/hint" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!-- Luces decorativas del "dispositivo" -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <View
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:background="@color/accent_blue"
+                        android:layout_marginEnd="6dp" />
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@color/leaf_light"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="3dp" />
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@color/accent_amber"
+                        android:layout_marginTop="3dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/dex_screen_bg"
+                    android:src="@drawable/ic_leaf_light"
+                    android:contentDescription="@string/hint" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/resultText"
+        <!-- Entrada de registro tipo Pokédex -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="12dp"
-            android:background="@drawable/result_background"
-            android:text="@string/hint"
-            android:textSize="16sp"
-            android:textAlignment="textStart"
-            android:lineSpacingMultiplier="1.2" />
+            android:layout_marginTop="14dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="@color/dex_screen">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/entryName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/dex_entry_default"
+                        android:textColor="@color/leaf_dark"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic" />
+
+                    <TextView
+                        android:id="@+id/entryChip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/chip_bg"
+                        android:paddingStart="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="4dp"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/resultText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/hint"
+                    android:textColor="@color/on_surface"
+                    android:textSize="15sp"
+                    android:textAlignment="textStart"
+                    android:lineSpacingMultiplier="1.25" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
             android:layout_width="match_parent"

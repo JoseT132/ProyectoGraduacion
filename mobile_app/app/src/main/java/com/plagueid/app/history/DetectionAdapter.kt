@@ -1,18 +1,23 @@
 package com.plagueid.app.history
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.plagueid.app.R
+import com.plagueid.app.SpeciesActivity
 import com.plagueid.app.api.DetectionRecord
 
 class DetectionAdapter(private val items: List<DetectionRecord>) :
     RecyclerView.Adapter<DetectionAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val statusStrip: View = itemView.findViewById(R.id.statusStrip)
         val speciesText: TextView = itemView.findViewById(R.id.speciesText)
+        val fichaHint: TextView = itemView.findViewById(R.id.fichaHint)
         val confidenceText: TextView = itemView.findViewById(R.id.confidenceText)
         val locationText: TextView = itemView.findViewById(R.id.locationText)
         val dateText: TextView = itemView.findViewById(R.id.dateText)
@@ -25,8 +30,12 @@ class DetectionAdapter(private val items: List<DetectionRecord>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        val ctx = holder.itemView.context
+
+        val hasSpecies = item.species != null
         holder.speciesText.text = item.species?.scientificName ?: "Especie desconocida"
         holder.confidenceText.text = "Confianza: ${"%.2f".format((item.confidence ?: 0f) * 100)}%"
+
         holder.locationText.text = when {
             item.latitude == null || item.longitude == null -> "Ubicación: no registrada"
             item.inExpectedRange == false ->
@@ -34,7 +43,24 @@ class DetectionAdapter(private val items: List<DetectionRecord>) :
             else ->
                 "Ubicación: ${"%.4f".format(item.latitude)}, ${"%.4f".format(item.longitude)}${item.region?.let { " ($it)" } ?: ""}"
         }
+
         holder.dateText.text = item.createdAt ?: "—"
+
+        val stripColor = when {
+            !hasSpecies -> R.color.status_gray
+            item.inExpectedRange == false -> R.color.accent_amber
+            else -> R.color.leaf_green
+        }
+        holder.statusStrip.setBackgroundColor(ContextCompat.getColor(ctx, stripColor))
+
+        holder.fichaHint.visibility = if (hasSpecies) View.VISIBLE else View.GONE
+        holder.itemView.setOnClickListener {
+            val slug = item.species?.slug ?: return@setOnClickListener
+            ctx.startActivity(
+                Intent(ctx, SpeciesActivity::class.java)
+                    .putExtra(SpeciesActivity.EXTRA_SLUG, slug)
+            )
+        }
     }
 
     override fun getItemCount(): Int = items.size
