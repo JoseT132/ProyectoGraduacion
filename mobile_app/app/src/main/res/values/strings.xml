@@ -30,6 +30,8 @@
     <string name="create_account">Crear cuenta</string>
     <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="passwords_dont_match">Las contraseñas no coinciden</string>
     <string name="first_name">Nombre</string>
     <string name="last_name">Apellido</string>
     <string name="birth_date_hint">Fecha de nacimiento (DD/MM/YYYY)</string>

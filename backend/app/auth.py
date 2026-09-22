@@ -138,19 +138,21 @@ def login_google(data: schemas.OAuthLogin, db: Session = Depends(get_db)):
     if not user:
         existing_email = crud.get_user_by_email(db, email) if email else None
         if existing_email:
-            raise HTTPException(
-                status_code=400,
-                detail="Este correo ya está registrado con otro método",
+            # El idToken verificado ya garantiza la posesión del correo:
+            # vinculamos la cuenta existente en lugar de rechazar.
+            existing_email.google_id = google_id
+            db.commit()
+            user = existing_email
+        else:
+            user = crud.create_user(
+                db,
+                {
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "email": email or f"{google_id}@google.local",
+                    "google_id": google_id,
+                },
             )
-        user = crud.create_user(
-            db,
-            {
-                "first_name": first_name,
-                "last_name": last_name,
-                "email": email or f"{google_id}@google.local",
-                "google_id": google_id,
-            },
-        )
 
     access_token = create_access_token(data={"sub": user.id})
     return {"access_token": access_token, "token_type": "bearer"}

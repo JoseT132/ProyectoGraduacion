@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.plagueid.app.api.ApiClient
 import com.plagueid.app.api.LoginRequest
 import com.plagueid.app.api.OAuthRequest
@@ -27,14 +28,25 @@ class LoginActivity : AppCompatActivity() {
     private val googleLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                val account = task.getResult(Exception::class.java)
-                account?.idToken?.let { sendGoogleToken(it) }
-            } catch (e: Exception) {
-                Toast.makeText(this, "Error de Google: ${e.message}", Toast.LENGTH_LONG).show()
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            val idToken = account?.idToken
+            if (idToken != null) {
+                sendGoogleToken(idToken)
+            } else {
+                Toast.makeText(
+                    this,
+                    "Google no devolvió idToken (revisa google_web_client_id)",
+                    Toast.LENGTH_LONG
+                ).show()
             }
+        } catch (e: ApiException) {
+            Toast.makeText(
+                this,
+                "Error de Google (código ${e.statusCode}): ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 

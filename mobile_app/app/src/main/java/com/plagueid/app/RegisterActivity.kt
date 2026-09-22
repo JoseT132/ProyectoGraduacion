@@ -76,11 +76,17 @@ class RegisterActivity : AppCompatActivity() {
         val lastName = binding.lastNameInput.text.toString().trim()
         val email = binding.emailInput.text.toString().trim()
         val password = binding.passwordInput.text.toString().trim()
+        val confirmPassword = binding.confirmPasswordInput.text.toString().trim()
         val birthDateRaw = binding.birthDateInput.text.toString().trim()
         val birthDate = parseBirthDate(birthDateRaw)
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Completa los campos obligatorios", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (password != confirmPassword) {
+            Toast.makeText(this, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show()
             return
         }
 
