@@ -1,4 +1,5 @@
 import os
+import secrets
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -9,6 +10,7 @@ from google.auth.transport import requests as google_requests
 
 from . import crud, models, schemas
 from .database import get_db
+from . import emailer
 from .security import (
     create_access_token,
     decode_access_token,
@@ -77,6 +79,40 @@ def login(user_in: schemas.UserLogin, db: Session = Depends(get_db)):
 @router.get("/me", response_model=schemas.UserProfile)
 def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
+
+
+@router.post("/forgot-password", response_model=schemas.MessageResponse)
+def forgot_password(data: schemas.ForgotPasswordRequest, db: Session = Depends(get_db)):
+    message = "Si el correo está registrado, recibirás un código de recuperación"
+    user = crud.get_user_by_email(db, data.email)
+    if not user:
+        return {"message": message}
+
+    code = f"{secrets.randbelow(1000000):06d}"
+    crud.create_reset_code(db, user.id, get_password_hash(code), hours=24)
+
+    response = {"message": message}
+    if not emailer.smtp_configured():
+        emailer.send_reset_code(user.email, code)  # loguea el codigo en consola
+        response["dev_code"] = code
+    elif not emailer.send_reset_code(user.email, code):
+        raise HTTPException(status_code=500, detail="No se pudo enviar el correo")
+    return response
+
+
+@router.post("/reset-password", response_model=schemas.MessageResponse)
+def reset_password(data: schemas.ResetPasswordRequest, db: Session = Depends(get_db)):
+    user = crud.get_user_by_email(db, data.email)
+    if not user:
+        raise HTTPException(status_code=400, detail="Código inválido o expirado")
+
+    record = crud.get_active_reset_code(db, user.id)
+    if not record or not verify_password(data.code, record.code_hash):
+        raise HTTPException(status_code=400, detail="Código inválido o expirado")
+
+    crud.update_user_password(db, user, get_password_hash(data.new_password))
+    crud.mark_reset_code_used(db, record)
+    return {"message": "Contraseña actualizada correctamente"}
 
 
 @router.post("/google", response_model=schemas.Token)

@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from datetime import datetime, timedelta
 from . import models
 
 
@@ -75,3 +76,48 @@ def get_user_detections(db: Session, user_id: int, skip: int = 0, limit: int = 1
         .limit(limit)
         .all()
     )
+
+
+def invalidate_user_reset_codes(db: Session, user_id: int):
+    db.query(models.PasswordResetCode).filter(
+        models.PasswordResetCode.user_id == user_id,
+        models.PasswordResetCode.used == False,  # noqa: E712
+    ).update({"used": True})
+    db.commit()
+
+
+def create_reset_code(db: Session, user_id: int, code_hash: str, hours: int = 24):
+    invalidate_user_reset_codes(db, user_id)
+    record = models.PasswordResetCode(
+        user_id=user_id,
+        code_hash=code_hash,
+        expires_at=datetime.utcnow() + timedelta(hours=hours),
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    return record
+
+
+def get_active_reset_code(db: Session, user_id: int):
+    return (
+        db.query(models.PasswordResetCode)
+        .filter(
+            models.PasswordResetCode.user_id == user_id,
+            models.PasswordResetCode.used == False,  # noqa: E712
+            models.PasswordResetCode.expires_at > datetime.utcnow(),
+        )
+        .order_by(models.PasswordResetCode.created_at.desc())
+        .first()
+    )
+
+
+def mark_reset_code_used(db: Session, code: models.PasswordResetCode):
+    code.used = True
+    db.commit()
+
+
+def update_user_password(db: Session, user: models.User, password_hash: str):
+    user.password_hash = password_hash
+    db.commit()
+    return user

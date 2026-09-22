@@ -95,6 +95,21 @@ class OAuthLogin(BaseModel):
     token: str
 
 
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+
+class ResetPasswordRequest(BaseModel):
+    email: str
+    code: str
+    new_password: str
+
+
+class MessageResponse(BaseModel):
+    message: str
+    dev_code: Optional[str] = None
+
+
 class UserProfile(UserBase):
     id: int
     age: int

@@ -17,6 +17,12 @@ interface PlagueApi {
     @POST("auth/google")
     suspend fun loginGoogle(@Body request: OAuthRequest): Response<TokenResponse>
 
+    @POST("auth/forgot-password")
+    suspend fun forgotPassword(@Body request: ForgotPasswordRequest): Response<MessageResponse>
+
+    @POST("auth/reset-password")
+    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<MessageResponse>
+
     @GET("auth/me")
     suspend fun getMe(): Response<UserProfile>
 

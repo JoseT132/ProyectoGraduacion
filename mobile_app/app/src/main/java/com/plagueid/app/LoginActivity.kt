@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener { doLogin() }
         binding.registerLink.setOnClickListener { startActivity(Intent(this, RegisterActivity::class.java)) }
         binding.googleButton.setOnClickListener { doGoogleSignIn() }
+        binding.forgotLink.setOnClickListener { startActivity(Intent(this, ResetPasswordActivity::class.java)) }
     }
 
     private fun doLogin() {

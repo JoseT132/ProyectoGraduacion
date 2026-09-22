@@ -111,27 +111,44 @@ GOOGLE_CLIENT_ID=                        # Client ID web de Google Cloud (ver se
 
 ### Configurar Google OAuth
 
-El login con Google ya está implementado (`POST /auth/google` en el backend y el botón "Continuar con Google" en la app). Para activarlo se necesitan credenciales de **Google Cloud Console**:
+El login con Google está configurado end-to-end: el **Web Client ID** ya está en `mobile_app/app/src/main/res/values/strings.xml` (`google_web_client_id`) y en `backend/.env` (`GOOGLE_CLIENT_ID`, cargado por `python-dotenv`).
 
-1. Entra a <https://console.cloud.google.com/> y crea un proyecto (o usa uno existente).
-2. En **APIs y servicios → Pantalla de consentimiento de OAuth**, configura el consentimiento (tipo "Externo", nombre de la app, correo de soporte).
-3. En **APIs y servicios → Credenciales → Crear credenciales → ID de cliente de OAuth**:
-   - **Tipo: Android** — nombre cualquiera, nombre de paquete `com.plagueid.app` y la huella **SHA-1** de tu keystore. Para el keystore de debug:
-     ```powershell
-     keytool -list -v -keystore "$env:USERPROFILE\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
-     ```
-     Copia el valor `SHA1` que imprime.
-   - **Tipo: Aplicación web** — nombre cualquiera, sin URIs de redirección. Copia el **Client ID** generado (formato `xxxx.apps.googleusercontent.com`).
-4. Pega el **Client ID web** en dos lugares:
-   - `mobile_app/app/src/main/res/values/strings.xml` → `<string name="google_web_client_id">...</string>`
-   - Variable de entorno del backend:
-     ```powershell
-     $env:GOOGLE_CLIENT_ID="xxxx.apps.googleusercontent.com"
-     ..\ai_core\venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000
-     ```
-5. Recompila la app. El botón de Google abrirá el selector de cuentas y el backend verificará el `idToken` antes de emitir el JWT.
+**Requisito pendiente en Google Cloud Console**: debe existir un **ID de cliente tipo Android** con:
 
-> Si `google_web_client_id` está vacío, el botón muestra "Google OAuth no está configurado" y el endpoint responde 501.
+- Nombre de paquete: `com.plagueid.app`
+- Huella SHA-1 del keystore de firma (debug): `A9:CB:F0:1F:C1:B6:85:93:95:1E:E1:E9:84:40:C1:EE:2E:D4:6E:32`
+
+Sin el cliente Android, el botón de Google falla con `DEVELOPER_ERROR` (código 10). Para obtener el SHA-1:
+
+```powershell
+& "C:\Program Files\Java\jre1.8.0_503\bin\keytool.exe" -list -v `
+  -keystore "$env:USERPROFILE\.android\debug.keystore" `
+  -alias androiddebugkey -storepass android -keypass android
+```
+
+(El `keytool` del JBR de Android Studio falla con locales en español; usar el del JRE/JDK o añadir `-J-Duser.language=en`.)
+
+> Cuando se genere el keystore de **release**, hay que registrar también su SHA-1 en Cloud Console.
+
+### Recuperación de contraseña
+
+Flujo por correo con código de 6 dígitos:
+
+- `POST /auth/forgot-password` `{email}` → genera código, invalida los anteriores, expira en **24 h**, lo envía por SMTP.
+- `POST /auth/reset-password` `{email, code, new_password}` → verifica código vigente y actualiza la contraseña.
+- La tabla `password_reset_codes` se crea automáticamente (`create_all` en lifespan).
+
+Configuración SMTP en `backend/.env` (con Gmail: activar 2FA y crear *contraseña de aplicación*):
+
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=tu_correo@gmail.com
+SMTP_PASS=xxxx_xxxx_xxxx_xxxx
+SMTP_FROM=tu_correo@gmail.com
+```
+
+> **Modo desarrollo**: si SMTP no está configurado, el endpoint devuelve `dev_code` en la respuesta y lo loguea en consola — la app lo autocompleta en el campo de código. Si SMTP está configurado y el envío falla, responde 500 (nunca expone el código por HTTP).
 
 ## 3. Aplicación móvil (`mobile_app/`)
 

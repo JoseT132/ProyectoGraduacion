@@ -32,6 +32,19 @@ data class UserProfile(
 
 data class OAuthRequest(val token: String)
 
+data class ForgotPasswordRequest(val email: String)
+
+data class ResetPasswordRequest(
+    val email: String,
+    val code: String,
+    val new_password: String
+)
+
+data class MessageResponse(
+    val message: String,
+    @SerializedName("dev_code") val devCode: String? = null
+)
+
 data class DetectionRecord(
     val id: Int,
     val species: Species?,

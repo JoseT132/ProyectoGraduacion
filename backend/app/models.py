@@ -41,6 +41,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     detections = relationship("Detection", back_populates="user")
+    reset_codes = relationship("PasswordResetCode", back_populates="user")
 
     @property
     def age(self) -> int:
@@ -69,3 +70,16 @@ class Detection(Base):
 
     species = relationship("Species", back_populates="detections")
     user = relationship("User", back_populates="detections")
+
+
+class PasswordResetCode(Base):
+    __tablename__ = "password_reset_codes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    code_hash = Column(String, nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    used = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="reset_codes")

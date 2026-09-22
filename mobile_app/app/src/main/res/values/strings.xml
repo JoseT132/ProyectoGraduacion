@@ -35,6 +35,18 @@
     <string name="birth_date_hint">Fecha de nacimiento (DD/MM/YYYY)</string>
     <string name="login_google">Continuar con Google</string>
     <string name="no_account">¿No tienes cuenta? Regístrate</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="reset_title">Recuperar contraseña</string>
+    <string name="reset_subtitle">Te enviaremos un código de 6 dígitos a tu correo. Expira en 24 horas.</string>
+    <string name="send_code">Enviar código</string>
+    <string name="reset_code_hint">Código de 6 dígitos</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="reset_password">Restablecer contraseña</string>
+    <string name="code_sent">Código enviado a tu correo</string>
+    <string name="code_sent_dev">SMTP no configurado — código de prueba: %1$s</string>
+    <string name="reset_done">Contraseña actualizada. Inicia sesión.</string>
+    <string name="reset_fields_error">Completa correo, código y nueva contraseña</string>
+    <string name="back_to_login">Volver al inicio de sesión</string>
     <string name="has_account">¿Ya tienes cuenta? Inicia sesión</string>
     <string name="title_home">Inicio</string>
     <string name="title_history">Historial</string>
@@ -45,5 +57,5 @@
 
     <!-- Web Client ID del proyecto en Google Cloud Console (tipo "Aplicación web").
          Ver README: sección "Configurar Google OAuth". -->
-    <string name="google_web_client_id" translatable="false"></string>
+    <string name="google_web_client_id" translatable="false">272372989953-mf3l78fs1a5vi8ruhdnmusb05sh7nqei.apps.googleusercontent.com</string>
 </resources>
