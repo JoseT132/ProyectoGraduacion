@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/reset_title"
+            android:text="@string/verify_title"
             android:textColor="@color/leaf_dark"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reset_subtitle"
+            android:text="@string/verify_subtitle"
             android:textColor="@color/text_muted"
             android:textSize="15sp"
             android:layout_marginTop="8dp" />
@@ -44,19 +44,23 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:textColor="@color/on_surface"
                 android:textColorHint="@color/text_muted"
-                android:id="@+id/emailInput"
+                android:id="@+id/codeInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+                android:hint="@string/reset_code_hint"
+                android:inputType="number"
+                android:maxLength="6"
+                android:gravity="center"
+                android:textSize="24sp"
+                android:letterSpacing="0.3" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sendCodeButton"
+            android:id="@+id/verifyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/send_code" />
+            android:text="@string/verify_code" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -66,11 +70,11 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/backToLogin"
+            android:id="@+id/resendLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/back_to_login"
+            android:text="@string/resend_code"
             android:textColor="?attr/colorPrimary" />
     </LinearLayout>
 </ScrollView>

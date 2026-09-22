@@ -45,6 +45,12 @@
     <string name="new_password">Nueva contraseña</string>
     <string name="reset_password">Restablecer contraseña</string>
     <string name="code_sent">Código enviado a tu correo</string>
+    <string name="verify_title">Verificar código</string>
+    <string name="verify_subtitle">Ingresa el código de 6 dígitos que enviamos a tu correo.</string>
+    <string name="verify_code">Validar código</string>
+    <string name="resend_code">Reenviar código</string>
+    <string name="new_password_title">Nueva contraseña</string>
+    <string name="new_password_subtitle">Código verificado. Elige tu nueva contraseña.</string>
     <string name="code_sent_dev">SMTP no configurado — código de prueba: %1$s</string>
     <string name="reset_done">Contraseña actualizada. Inicia sesión.</string>
     <string name="reset_fields_error">Completa correo, código y nueva contraseña</string>

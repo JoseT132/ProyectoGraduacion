@@ -99,6 +99,11 @@ class ForgotPasswordRequest(BaseModel):
     email: str
 
 
+class VerifyCodeRequest(BaseModel):
+    email: str
+    code: str
+
+
 class ResetPasswordRequest(BaseModel):
     email: str
     code: str

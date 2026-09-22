@@ -34,6 +34,11 @@ data class OAuthRequest(val token: String)
 
 data class ForgotPasswordRequest(val email: String)
 
+data class VerifyCodeRequest(
+    val email: String,
+    val code: String
+)
+
 data class ResetPasswordRequest(
     val email: String,
     val code: String,

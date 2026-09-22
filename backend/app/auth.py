@@ -100,6 +100,19 @@ def forgot_password(data: schemas.ForgotPasswordRequest, db: Session = Depends(g
     return response
 
 
+@router.post("/verify-reset-code", response_model=schemas.MessageResponse)
+def verify_reset_code(data: schemas.VerifyCodeRequest, db: Session = Depends(get_db)):
+    user = crud.get_user_by_email(db, data.email)
+    if not user:
+        raise HTTPException(status_code=400, detail="Código inválido o expirado")
+
+    record = crud.get_active_reset_code(db, user.id)
+    if not record or not verify_password(data.code, record.code_hash):
+        raise HTTPException(status_code=400, detail="Código inválido o expirado")
+
+    return {"message": "Código válido"}
+
+
 @router.post("/reset-password", response_model=schemas.MessageResponse)
 def reset_password(data: schemas.ResetPasswordRequest, db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, data.email)
@@ -127,6 +140,8 @@ def login_google(data: schemas.OAuthLogin, db: Session = Depends(get_db)):
             GOOGLE_CLIENT_ID,
         )
     except Exception as exc:
+        print(f"[auth] GOOGLE_CLIENT_ID configurado: {GOOGLE_CLIENT_ID[:20]}...")
+        print(f"[auth] Token de Google rechazado: {exc}")
         raise HTTPException(status_code=400, detail=f"Token de Google inválido: {exc}")
 
     google_id = idinfo.get("sub")

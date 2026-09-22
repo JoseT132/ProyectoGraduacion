@@ -20,6 +20,9 @@ interface PlagueApi {
     @POST("auth/forgot-password")
     suspend fun forgotPassword(@Body request: ForgotPasswordRequest): Response<MessageResponse>
 
+    @POST("auth/verify-reset-code")
+    suspend fun verifyResetCode(@Body request: VerifyCodeRequest): Response<MessageResponse>
+
     @POST("auth/reset-password")
     suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<MessageResponse>
 
