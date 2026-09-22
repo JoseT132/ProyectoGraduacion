@@ -53,7 +53,8 @@ data class PredictResponse(
     val ficha: Species?,
     @SerializedName("is_unknown") val isUnknown: Boolean = false,
     @SerializedName("in_expected_range") val inExpectedRange: Boolean? = null,
-    val region: String? = null
+    val region: String? = null,
+    @SerializedName("detection_id") val detectionId: Int? = null
 )
 
 data class PredictedItem(

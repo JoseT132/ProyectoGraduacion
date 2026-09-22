@@ -152,6 +152,14 @@
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/liveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/live_mode"
+            app:icon="@android:drawable/ic_menu_view" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/identifyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

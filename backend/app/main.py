@@ -104,7 +104,7 @@ async def predict(
             matched = regions.regions_for(latitude, longitude)
         region_name = matched[0] if matched else None
 
-    crud.create_detection(
+    detection = crud.create_detection(
         db,
         species_id=species.id if species else None,
         user_id=current_user.id,
@@ -126,6 +126,7 @@ async def predict(
         "is_unknown": is_unknown,
         "in_expected_range": in_range,
         "region": region_name,
+        "detection_id": detection.id,
     }
 
 

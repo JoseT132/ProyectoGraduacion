@@ -49,6 +49,7 @@ class PredictResponse(BaseModel):
     is_unknown: bool = False
     in_expected_range: Optional[bool] = None
     region: Optional[str] = None
+    detection_id: Optional[int] = None
 
 
 class UserBase(BaseModel):

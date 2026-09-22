@@ -17,6 +17,12 @@
     <string name="unknown_entry">Especie desconocida</string>
     <string name="location_permission">Se requiere permiso de ubicación para registrar la zona de la detección</string>
     <string name="location_unavailable">Ubicación no disponible</string>
+    <string name="live_mode">Escaneo en vivo</string>
+    <string name="scanning">Buscando insecto…</string>
+    <string name="capture_detection">Registrar detección</string>
+    <string name="saved_local">Guardado localmente (pendiente de sincronizar)</string>
+    <string name="saved_synced">Guardado y sincronizado</string>
+    <string name="no_detection_to_save">No hay detección para registrar</string>
 
     <string name="login_subtitle">Inicia sesión para continuar</string>
     <string name="login">Iniciar sesión</string>

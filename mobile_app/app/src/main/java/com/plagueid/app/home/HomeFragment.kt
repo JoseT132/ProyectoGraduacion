@@ -24,8 +24,11 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.plagueid.app.R
+import com.plagueid.app.ScanActivity
 import com.plagueid.app.SpeciesActivity
 import com.plagueid.app.api.ApiClient
+import com.plagueid.app.api.PredictedItem
+import com.plagueid.app.data.LocalDetections
 import com.plagueid.app.databinding.FragmentHomeBinding
 import com.plagueid.app.ml.Detection
 import com.plagueid.app.ml.OnnxClassifier
@@ -51,8 +54,19 @@ class HomeFragment : Fragment() {
     private var currentPhotoUri: Uri? = null
     private var selectedBitmap: Bitmap? = null
     private var lastSlug: String? = null
+    private var currentSource: String = "gallery"
 
     private val UNKNOWN_THRESHOLD = 0.80f
+
+    private val livePermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            startActivity(android.content.Intent(requireContext(), ScanActivity::class.java))
+        } else {
+            Toast.makeText(requireContext(), R.string.camera_permission, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -61,6 +75,7 @@ class HomeFragment : Fragment() {
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
+        currentSource = "gallery"
         uri?.let { loadImage(it) }
     }
 
@@ -68,6 +83,7 @@ class HomeFragment : Fragment() {
         ActivityResultContracts.TakePicture()
     ) { success: Boolean ->
         if (success) {
+            currentSource = "photo"
             currentPhotoUri?.let { loadImage(it) }
         }
     }
@@ -96,6 +112,7 @@ class HomeFragment : Fragment() {
 
         binding.cameraButton.setOnClickListener { checkCameraPermission() }
         binding.galleryButton.setOnClickListener { galleryLauncher.launch("image/*") }
+        binding.liveButton.setOnClickListener { launchLiveMode() }
         binding.identifyButton.setOnClickListener { identify() }
         binding.fichaButton.setOnClickListener { loadFicha() }
     }
@@ -111,6 +128,16 @@ class HomeFragment : Fragment() {
             }
 
             else -> permissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    private fun launchLiveMode() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            startActivity(android.content.Intent(requireContext(), ScanActivity::class.java))
+        } else {
+            livePermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
@@ -222,7 +249,8 @@ class HomeFragment : Fragment() {
                 lastSlug = if (isUnknown) null else top.first
 
                 val location = getLastLocation()
-                sendDetectionToBackend(crop, location)
+                val localId = saveLocalDetection(bitmap, detection, predictions, location)
+                sendDetectionToBackend(crop, location, localId)
 
                 val overlay = drawDetection(bitmap, detection)
                 val message = buildString {
@@ -292,7 +320,40 @@ class HomeFragment : Fragment() {
             ?: lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
     }
 
-    private fun sendDetectionToBackend(bitmap: Bitmap, location: Location?) {
+    private fun saveLocalDetection(
+        bitmap: Bitmap,
+        detection: Detection,
+        predictions: List<Pair<String, Float>>,
+        location: Location?
+    ): String? {
+        val appContext = context?.applicationContext ?: return null
+        return try {
+            val top = predictions.first()
+            val slug = if (top.second < UNKNOWN_THRESHOLD) null else top.first
+            val items = predictions.mapIndexed { i, p ->
+                PredictedItem(
+                    rank = i + 1,
+                    species = p.first.replace("_", " "),
+                    slug = p.first,
+                    confidence = p.second
+                )
+            }
+            val (record, _) = LocalDetections.newRecord(
+                source = currentSource,
+                box = detection,
+                topSlug = slug,
+                topConfidence = top.second,
+                topPredictions = items,
+                latitude = location?.latitude,
+                longitude = location?.longitude
+            )
+            LocalDetections.save(appContext, bitmap, record).id
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun sendDetectionToBackend(bitmap: Bitmap, location: Location?, localId: String?) {
         val appContext = context?.applicationContext ?: return
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -306,6 +367,11 @@ class HomeFragment : Fragment() {
                     longitude = location?.longitude
                 )
                 val body = response.body()
+                if (response.isSuccessful && body != null && localId != null) {
+                    LocalDetections.markSynced(
+                        appContext, localId, body.detectionId, body.region, body.inExpectedRange
+                    )
+                }
                 if (body?.inExpectedRange != null) {
                     val verdict = if (body.inExpectedRange == true) {
                         "Distribución: consistente con el rango conocido${body.region?.let { " ($it)" } ?: ""}"
