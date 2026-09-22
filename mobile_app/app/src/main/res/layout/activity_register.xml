@@ -16,8 +16,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="16dp"
-            android:src="@drawable/ic_leaf"
-            android:alpha="0.12" />
+            android:src="@drawable/ic_app_logo" />
 
         <TextView
             android:layout_width="wrap_content"

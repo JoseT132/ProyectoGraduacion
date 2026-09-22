@@ -59,5 +59,5 @@
 
     <!-- Web Client ID del proyecto en Google Cloud Console (tipo "Aplicación web").
          Ver README: sección "Configurar Google OAuth". -->
-    <string name="google_web_client_id" translatable="false">272372989953-mf3l78fs1a5vi8ruhdnmusb05sh7nqei.apps.googleusercontent.com</string>
+    <string name="google_web_client_id" translatable="false">272372989953-c4c435vc68p3277l6jhoe53vejidc5go.apps.googleusercontent.com</string>
 </resources>
