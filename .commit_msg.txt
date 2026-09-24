@@ -1,0 +1,10 @@
+Separa recuperacion de contrasena en 3 pantallas con validacion previa
+
+- Nuevo POST /auth/verify-reset-code valida el codigo sin consumirlo
+- Flujo: ResetPasswordActivity (email) -> VerifyCodeActivity (codigo,
+  con opcion reenviar) -> NewPasswordActivity (nueva pass + confirmar)
+- La pantalla de nueva contrasena solo aparece tras validar el codigo
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

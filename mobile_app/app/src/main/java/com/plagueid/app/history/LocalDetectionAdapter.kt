@@ -8,7 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import android.content.Intent
 import com.plagueid.app.R
+import com.plagueid.app.SpeciesActivity
 import com.plagueid.app.data.LocalDetection
 import com.plagueid.app.data.LocalDetections
 import com.plagueid.app.util.formatEpoch
@@ -24,6 +26,7 @@ class LocalDetectionAdapter(
         val dateText: TextView = itemView.findViewById(R.id.dateText)
         val statusText: TextView = itemView.findViewById(R.id.statusText)
         val deleteButton: TextView = itemView.findViewById(R.id.deleteButton)
+        val fichaChevron: View = itemView.findViewById(R.id.fichaChevron)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,6 +61,15 @@ class LocalDetectionAdapter(
         }
 
         holder.deleteButton.setOnClickListener { onDelete(item) }
+
+        holder.fichaChevron.visibility = if (item.topSlug != null) View.VISIBLE else View.GONE
+        holder.itemView.setOnClickListener {
+            val slug = item.topSlug ?: return@setOnClickListener
+            ctx.startActivity(
+                Intent(ctx, SpeciesActivity::class.java)
+                    .putExtra(SpeciesActivity.EXTRA_SLUG, slug)
+            )
+        }
     }
 
     override fun getItemCount(): Int = items.size

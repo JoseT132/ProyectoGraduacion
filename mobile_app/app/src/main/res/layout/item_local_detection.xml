@@ -66,5 +66,13 @@
             android:textColor="#B00020"
             android:textSize="12sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/fichaChevron"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_chevron"
+            android:visibility="gone"
+            android:contentDescription="@string/ficha_button" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

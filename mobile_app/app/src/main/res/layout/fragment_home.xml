@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="16dp">
+    android:clipToPadding="false"
+    android:padding="16dp"
+    android:paddingBottom="110dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,47 +136,66 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cameraButton"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:text="@string/take_photo"
-                app:icon="@android:drawable/ic_menu_camera" />
+                android:textColor="@color/leaf_dark"
+                app:backgroundTint="@color/leaf_pale"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_camera"
+                app:iconTint="@color/leaf_dark" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/galleryButton"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:text="@string/select_gallery"
-                app:icon="@android:drawable/ic_menu_gallery" />
+                android:textColor="@color/leaf_dark"
+                app:backgroundTint="@color/leaf_pale"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_gallery"
+                app:iconTint="@color/leaf_dark" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/liveButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
             android:text="@string/live_mode"
-            app:icon="@android:drawable/ic_menu_view" />
+            app:backgroundTint="@color/leaf_dark"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_scan" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/identifyButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
             android:text="@string/identify"
-            app:icon="@android:drawable/ic_menu_search" />
+            app:backgroundTint="@color/leaf_green"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_identify" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fichaButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
             android:text="@string/ficha_button"
+            android:textColor="@color/leaf_dark"
             android:visibility="gone"
-            style="@style/Widget.Material3.Button.OutlinedButton" />
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_terms"
+            app:iconTint="@color/leaf_dark"
+            app:strokeColor="@color/leaf_green" />
 
         <ProgressBar
             android:id="@+id/progressBar"

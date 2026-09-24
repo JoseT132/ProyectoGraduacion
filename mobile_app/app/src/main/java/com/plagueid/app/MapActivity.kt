@@ -7,7 +7,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.core.content.ContextCompat
 import com.plagueid.app.api.ApiClient
+import com.plagueid.app.data.LocalDetections
+import com.plagueid.app.util.formatEpoch
 import com.plagueid.app.util.formatIso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,29 +52,34 @@ class MapActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val response = ApiClient.getApi(this@MapActivity).getDetections()
+                val remote = if (response.isSuccessful) response.body() ?: emptyList() else emptyList()
+                val local = LocalDetections.list(this@MapActivity)
                 withContext(Dispatchers.Main) {
-                    if (!response.isSuccessful || response.body() == null) {
-                        Toast.makeText(this@MapActivity, "No se pudo cargar el historial", Toast.LENGTH_SHORT).show()
-                        return@withContext
+                    val geoPoints = mutableListOf<GeoPoint>()
+
+                    remote.filter { it.latitude != null && it.longitude != null }.forEach { d ->
+                        addMarker(
+                            GeoPoint(d.latitude!!, d.longitude!!),
+                            d.species?.scientificName ?: getString(R.string.unknown_entry),
+                            "${formatIso(d.createdAt)}${d.region?.let { " · $it" } ?: ""}",
+                            R.color.leaf_green,
+                            geoPoints
+                        )
                     }
-                    val points = response.body()!!.filter {
-                        it.latitude != null && it.longitude != null
+
+                    local.filter { it.latitude != null && it.longitude != null }.forEach { d ->
+                        addMarker(
+                            GeoPoint(d.latitude!!, d.longitude!!),
+                            d.topSlug?.replace("_", " ") ?: getString(R.string.unknown_entry),
+                            "${formatEpoch(d.createdAt)} · local",
+                            R.color.accent_amber,
+                            geoPoints
+                        )
                     }
-                    if (points.isEmpty()) {
+
+                    if (geoPoints.isEmpty()) {
                         emptyText.visibility = View.VISIBLE
                         return@withContext
-                    }
-                    val geoPoints = mutableListOf<GeoPoint>()
-                    points.forEach { d ->
-                        val gp = GeoPoint(d.latitude!!, d.longitude!!)
-                        geoPoints.add(gp)
-                        val marker = Marker(map)
-                        marker.position = gp
-                        marker.title = d.species?.scientificName ?: "Especie desconocida"
-                        marker.snippet =
-                            "${formatIso(d.createdAt)}${d.region?.let { " · $it" } ?: ""}"
-                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                        map.overlays.add(marker)
                     }
                     if (geoPoints.size == 1) {
                         map.controller.setZoom(12.0)
@@ -88,6 +96,27 @@ class MapActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun addMarker(
+        point: GeoPoint,
+        title: String,
+        snippet: String,
+        tintRes: Int,
+        geoPoints: MutableList<GeoPoint>
+    ) {
+        geoPoints.add(point)
+        val marker = Marker(map)
+        marker.position = point
+        marker.title = title
+        marker.snippet = snippet
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        ContextCompat.getDrawable(this, R.drawable.ic_map_marker)?.let { icon ->
+            marker.icon = icon.mutate().apply {
+                setTint(ContextCompat.getColor(this@MapActivity, tintRes))
+            }
+        }
+        map.overlays.add(marker)
     }
 
     override fun onResume() {
