@@ -6,7 +6,7 @@ import time
 # Definición de las 25 especies y su ID de clase correspondiente
 SPECIES_LIST = [
     # Aleyrodidae
-    "Bemisia tabaci", "Trialeurodes vaporariorum", "Aleurocanthus woglumi", "Aleurodicus dispersus", "Bemisia argentifolii",
+    "Bemisia tabaci", "Trialeurodes vaporariorum", "Aleurocanthus woglumi", "Aleurodicus dispersus",
     # Coccinellidae
     "Hippodamia convergens", "Cycloneda sanguinea", "Harmonia axyridis", "Coccinella septempunctata", "Coleomegilla maculata",
     # Aphididae

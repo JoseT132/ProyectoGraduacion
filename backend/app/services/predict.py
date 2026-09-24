@@ -9,6 +9,9 @@ _MODEL = None
 def find_cls_model() -> Path:
     root = Path(__file__).parents[3].resolve()
     candidates = [
+        root / "runs" / "classify" / "insect_yolov11s_cls_crops_v4" / "weights" / "best.pt",
+        root / "runs" / "classify" / "runs" / "classify" / "insect_yolov11s_cls_crops_v4" / "weights" / "best.pt",
+        root / "runs" / "classify" / "runs" / "classify" / "insect_yolov11s_cls_crops_v3" / "weights" / "best.pt",
         root / "runs" / "classify" / "runs" / "classify" / "insect_yolov11s_cls_crops" / "weights" / "best.pt",
         root / "runs" / "classify" / "insect_yolov11s_cls_crops" / "weights" / "best.pt",
         root / "runs" / "classify" / "runs" / "classify" / "insect_yolov11n_cls_crops" / "weights" / "best.pt",

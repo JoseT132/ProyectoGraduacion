@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
     private var lastSlug: String? = null
     private var currentSource: String = "gallery"
 
-    private val UNKNOWN_THRESHOLD = 0.80f
+    private val UNKNOWN_THRESHOLD = 0.75f
 
     private val livePermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()

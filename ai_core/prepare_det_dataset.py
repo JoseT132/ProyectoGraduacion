@@ -11,7 +11,7 @@ TRAIN_RATIO = 0.7
 VAL_RATIO = 0.2
 
 SPECIES_LIST = [
-    "Bemisia tabaci", "Trialeurodes vaporariorum", "Aleurocanthus woglumi", "Aleurodicus dispersus", "Bemisia argentifolii",
+    "Bemisia tabaci", "Trialeurodes vaporariorum", "Aleurocanthus woglumi", "Aleurodicus dispersus",
     "Hippodamia convergens", "Cycloneda sanguinea", "Harmonia axyridis", "Coccinella septempunctata", "Coleomegilla maculata",
     "Myzus persicae", "Brevicoryne brassicae", "Aphis gossypii", "Macrosiphum euphorbiae", "Aphis craccivora",
     "Spodoptera frugiperda", "Helicoverpa zea", "Trichoplusia ni", "Spodoptera exigua", "Agrotis ipsilon",
@@ -89,7 +89,7 @@ def prepare_det_dataset():
         "train": "train/images",
         "val": "val/images",
         "test": "test/images",
-        "nc": 25,
+        "nc": len(SPECIES_LIST),
         "names": [s.replace(" ", "_") for s in SPECIES_LIST]
     }
 

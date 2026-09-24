@@ -8,6 +8,8 @@ from ultralytics import YOLO
 def find_cls_model():
     ai_core_dir = Path(__file__).parent.resolve()
     candidates = [
+        ai_core_dir.parent / "runs" / "classify" / "insect_yolov11s_cls_crops_v4" / "weights" / "best.pt",
+        ai_core_dir.parent / "runs" / "classify" / "runs" / "classify" / "insect_yolov11s_cls_crops_v4" / "weights" / "best.pt",
         ai_core_dir.parent / "runs" / "classify" / "runs" / "classify" / "insect_yolov11s_cls_crops_v3" / "weights" / "best.pt",
         ai_core_dir.parent / "runs" / "classify" / "runs" / "classify" / "insect_yolov11s_cls_crops" / "weights" / "best.pt",
         ai_core_dir.parent / "runs" / "classify" / "runs" / "classify" / "insect_yolov11n_cls_crops" / "weights" / "best.pt",

@@ -1,0 +1,255 @@
+{
+  "model": "../runs/classify/runs/classify/insect_yolov11s_cls_crops_v3/weights/best.pt",
+  "split": "test",
+  "overall_top1": 0.7182,
+  "per_class": {
+    "Agrotis_ipsilon": {
+      "correct": 12,
+      "total": 16,
+      "acc": 0.75
+    },
+    "Aleurocanthus_woglumi": {
+      "correct": 5,
+      "total": 6,
+      "acc": 0.8333
+    },
+    "Aleurodicus_dispersus": {
+      "correct": 9,
+      "total": 11,
+      "acc": 0.8182
+    },
+    "Aphis_craccivora": {
+      "correct": 10,
+      "total": 16,
+      "acc": 0.625
+    },
+    "Aphis_gossypii": {
+      "correct": 9,
+      "total": 15,
+      "acc": 0.6
+    },
+    "Bemisia_argentifolii": {
+      "correct": 8,
+      "total": 15,
+      "acc": 0.5333
+    },
+    "Bemisia_tabaci": {
+      "correct": 2,
+      "total": 9,
+      "acc": 0.2222
+    },
+    "Brevicoryne_brassicae": {
+      "correct": 12,
+      "total": 15,
+      "acc": 0.8
+    },
+    "Chinavia_hilaris": {
+      "correct": 11,
+      "total": 16,
+      "acc": 0.6875
+    },
+    "Coccinella_septempunctata": {
+      "correct": 8,
+      "total": 16,
+      "acc": 0.5
+    },
+    "Coleomegilla_maculata": {
+      "correct": 14,
+      "total": 15,
+      "acc": 0.9333
+    },
+    "Cycloneda_sanguinea": {
+      "correct": 16,
+      "total": 16,
+      "acc": 1.0
+    },
+    "Euschistus_servus": {
+      "correct": 12,
+      "total": 15,
+      "acc": 0.8
+    },
+    "Halyomorpha_halys": {
+      "correct": 15,
+      "total": 16,
+      "acc": 0.9375
+    },
+    "Harmonia_axyridis": {
+      "correct": 8,
+      "total": 15,
+      "acc": 0.5333
+    },
+    "Helicoverpa_zea": {
+      "correct": 11,
+      "total": 15,
+      "acc": 0.7333
+    },
+    "Hippodamia_convergens": {
+      "correct": 11,
+      "total": 15,
+      "acc": 0.7333
+    },
+    "Macrosiphum_euphorbiae": {
+      "correct": 6,
+      "total": 15,
+      "acc": 0.4
+    },
+    "Murgantia_histrionica": {
+      "correct": 13,
+      "total": 15,
+      "acc": 0.8667
+    },
+    "Myzus_persicae": {
+      "correct": 6,
+      "total": 15,
+      "acc": 0.4
+    },
+    "Nezara_viridula": {
+      "correct": 11,
+      "total": 15,
+      "acc": 0.7333
+    },
+    "Spodoptera_exigua": {
+      "correct": 13,
+      "total": 15,
+      "acc": 0.8667
+    },
+    "Spodoptera_frugiperda": {
+      "correct": 11,
+      "total": 15,
+      "acc": 0.7333
+    },
+    "Trialeurodes_vaporariorum": {
+      "correct": 14,
+      "total": 15,
+      "acc": 0.9333
+    },
+    "Trichoplusia_ni": {
+      "correct": 13,
+      "total": 15,
+      "acc": 0.8667
+    }
+  },
+  "confusions": {
+    "Agrotis_ipsilon": {
+      "Spodoptera_frugiperda": 4
+    },
+    "Aleurocanthus_woglumi": {
+      "Aphis_gossypii": 1
+    },
+    "Aleurodicus_dispersus": {
+      "Trialeurodes_vaporariorum": 1,
+      "Brevicoryne_brassicae": 1
+    },
+    "Aphis_craccivora": {
+      "Cycloneda_sanguinea": 1,
+      "Coleomegilla_maculata": 1,
+      "Chinavia_hilaris": 1,
+      "Euschistus_servus": 1,
+      "Aphis_gossypii": 1,
+      "Brevicoryne_brassicae": 1
+    },
+    "Aphis_gossypii": {
+      "Euschistus_servus": 2,
+      "Aphis_craccivora": 1,
+      "Macrosiphum_euphorbiae": 1,
+      "Coleomegilla_maculata": 1,
+      "Myzus_persicae": 1
+    },
+    "Bemisia_argentifolii": {
+      "Aleurodicus_dispersus": 3,
+      "Trialeurodes_vaporariorum": 2,
+      "Coleomegilla_maculata": 1,
+      "Bemisia_tabaci": 1
+    },
+    "Bemisia_tabaci": {
+      "Trialeurodes_vaporariorum": 4,
+      "Bemisia_argentifolii": 2,
+      "Aleurodicus_dispersus": 1
+    },
+    "Brevicoryne_brassicae": {
+      "Macrosiphum_euphorbiae": 1,
+      "Aphis_gossypii": 1,
+      "Coccinella_septempunctata": 1
+    },
+    "Chinavia_hilaris": {
+      "Nezara_viridula": 1,
+      "Myzus_persicae": 2,
+      "Murgantia_histrionica": 2
+    },
+    "Coccinella_septempunctata": {
+      "Aphis_craccivora": 1,
+      "Macrosiphum_euphorbiae": 1,
+      "Hippodamia_convergens": 4,
+      "Aphis_gossypii": 1,
+      "Nezara_viridula": 1
+    },
+    "Coleomegilla_maculata": {
+      "Halyomorpha_halys": 1
+    },
+    "Euschistus_servus": {
+      "Trialeurodes_vaporariorum": 1,
+      "Aphis_gossypii": 1,
+      "Helicoverpa_zea": 1
+    },
+    "Halyomorpha_halys": {
+      "Euschistus_servus": 1
+    },
+    "Harmonia_axyridis": {
+      "Murgantia_histrionica": 1,
+      "Bemisia_argentifolii": 1,
+      "Myzus_persicae": 1,
+      "Coleomegilla_maculata": 1,
+      "Coccinella_septempunctata": 2,
+      "Hippodamia_convergens": 1
+    },
+    "Helicoverpa_zea": {
+      "Spodoptera_exigua": 2,
+      "Euschistus_servus": 2
+    },
+    "Hippodamia_convergens": {
+      "Harmonia_axyridis": 1,
+      "Coccinella_septempunctata": 2,
+      "Brevicoryne_brassicae": 1
+    },
+    "Macrosiphum_euphorbiae": {
+      "Brevicoryne_brassicae": 1,
+      "Chinavia_hilaris": 1,
+      "Euschistus_servus": 1,
+      "Harmonia_axyridis": 1,
+      "Myzus_persicae": 2,
+      "Cycloneda_sanguinea": 2,
+      "Nezara_viridula": 1
+    },
+    "Murgantia_histrionica": {
+      "Coleomegilla_maculata": 1,
+      "Aleurodicus_dispersus": 1
+    },
+    "Myzus_persicae": {
+      "Macrosiphum_euphorbiae": 4,
+      "Aphis_gossypii": 3,
+      "Chinavia_hilaris": 2
+    },
+    "Nezara_viridula": {
+      "Chinavia_hilaris": 2,
+      "Euschistus_servus": 1,
+      "Brevicoryne_brassicae": 1
+    },
+    "Spodoptera_exigua": {
+      "Trialeurodes_vaporariorum": 1,
+      "Agrotis_ipsilon": 1
+    },
+    "Spodoptera_frugiperda": {
+      "Helicoverpa_zea": 1,
+      "Brevicoryne_brassicae": 1,
+      "Spodoptera_exigua": 1,
+      "Agrotis_ipsilon": 1
+    },
+    "Trialeurodes_vaporariorum": {
+      "Bemisia_argentifolii": 1
+    },
+    "Trichoplusia_ni": {
+      "Trialeurodes_vaporariorum": 1,
+      "Aleurodicus_dispersus": 1
+    }
+  }
+}

@@ -52,7 +52,7 @@ class ScanActivity : AppCompatActivity() {
     @Volatile private var lastPredictions: List<Pair<String, Float>>? = null
     @Volatile private var lastSlug: String? = null
 
-    private val UNKNOWN_THRESHOLD = 0.80f
+    private val UNKNOWN_THRESHOLD = 0.75f
 
     private val cameraPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
