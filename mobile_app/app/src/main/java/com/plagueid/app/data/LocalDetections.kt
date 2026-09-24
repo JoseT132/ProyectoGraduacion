@@ -107,6 +107,19 @@ object LocalDetections {
     fun pendingSync(context: Context): List<LocalDetection> =
         list(context).filter { !it.synced }
 
+    fun imageFile(context: Context, record: LocalDetection): File =
+        File(dir(context), record.imageFile)
+
+    fun delete(context: Context, localId: String) {
+        synchronized(lock) {
+            val records = list(context)
+            records.firstOrNull { it.id == localId }?.let {
+                File(dir(context), it.imageFile).delete()
+            }
+            writeIndex(context, records.filter { it.id != localId })
+        }
+    }
+
     fun markSynced(
         context: Context,
         localId: String,

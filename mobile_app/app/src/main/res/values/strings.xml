@@ -66,4 +66,44 @@
     <!-- Web Client ID del proyecto en Google Cloud Console (tipo "Aplicación web").
          Ver README: sección "Configurar Google OAuth". -->
     <string name="google_web_client_id" translatable="false">272372989953-c4c435vc68p3277l6jhoe53vejidc5go.apps.googleusercontent.com</string>
+
+    <!-- Historial / sincronización -->
+    <string name="local_section_title">Detecciones locales</string>
+    <string name="remote_section_title">Historial en la nube</string>
+    <string name="pending_count">%1$d pendientes de sincronizar</string>
+    <string name="sync_button">Sincronizar</string>
+    <string name="view_map">Ver mapa</string>
+    <string name="no_local_detections">Sin detecciones guardadas en este dispositivo</string>
+    <string name="local_thumb_desc">Foto de la detección</string>
+    <string name="sync_status_synced">Sincronizada</string>
+    <string name="sync_status_pending">Pendiente de sincronizar</string>
+    <string name="sync_status_error">Error al sincronizar</string>
+    <string name="nothing_to_sync">No hay detecciones pendientes</string>
+    <string name="sync_result">%1$d de %2$d detecciones sincronizadas</string>
+    <string name="delete_button">Eliminar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete_detection_title">Eliminar detección</string>
+    <string name="delete_local_message">Se eliminará la imagen y el registro guardados en este dispositivo.</string>
+    <string name="delete_remote_message">Se eliminará esta detección de tu historial en la nube.</string>
+    <string name="delete_error">No se pudo eliminar</string>
+    <string name="species_photo_desc">Foto de la especie</string>
+    <string name="map_title">Mapa de detecciones</string>
+    <string name="no_map_points">Sin detecciones con ubicación registrada</string>
+
+    <!-- Perfil / legal -->
+    <string name="legal_section_title">Información y legal</string>
+    <string name="terms_title">Términos y condiciones</string>
+    <string name="terms_subtitle">Uso informativo de la aplicación</string>
+    <string name="privacy_title">Privacidad de datos</string>
+    <string name="privacy_subtitle">Cómo tratamos tus datos</string>
+    <string name="security_title">Seguridad del sistema</string>
+    <string name="security_subtitle">Protección de tu cuenta</string>
+    <string name="logout_subtitle">Salir de tu cuenta</string>
+    <string name="back">Volver</string>
+
+    <string name="terms_text">PlagueID es una herramienta de apoyo informativo para la identificación de insectos plaga y la consulta de fichas técnicas de Manejo Integrado de Plagas (MIP).\n\nLa información mostrada por la aplicación — identificaciones, niveles de confianza, fichas técnicas y recomendaciones de manejo — es meramente informativa y orientativa. No constituye un diagnóstico ni un criterio técnico final.\n\nAntes de tomar decisiones de manejo, control o aplicación de productos, verifica siempre la identificación con un profesional agrícola o técnico calificado y consulta la normativa vigente de tu país.\n\nLas identificaciones se realizan mediante un modelo de inteligencia artificial y pueden contener errores. La exactitud de los resultados no está garantizada.\n\nAl usar esta aplicación aceptas que los desarrolladores no se hacen responsables de pérdidas o daños derivados del uso de la información proporcionada.</string>
+
+    <string name="privacy_text">Datos que recopilamos:\n\n• Datos de cuenta: nombre, correo electrónico y fecha de nacimiento, necesarios para crear tu cuenta.\n• Imágenes: las fotos que capturas o seleccionas para identificar insectos.\n• Ubicación GPS: coordenadas del lugar de cada detección, usadas para validar la distribución geográfica de la especie.\n\nUso de los datos:\n\n• Las imágenes se procesan en el dispositivo mediante modelos de inteligencia artificial.\n• Los metadatos de las detecciones (especie, confianza, fecha y ubicación) se guardan en tu historial personal.\n• Tus datos no se comparten con terceros ni se usan con fines publicitarios.\n\nTus derechos:\n\n• Puedes eliminar detecciones individuales desde el historial.\n• Las detecciones locales se almacenan únicamente en tu dispositivo hasta que se sincronizan.\n• Puedes solicitar la eliminación de tu cuenta y de todos tus datos.</string>
+
+    <string name="security_text">Medidas de seguridad implementadas:\n\n• Las contraseñas se almacenan cifradas con bcrypt; nunca se guardan en texto plano.\n• Las sesiones usan tokens JWT con expiración de 7 días.\n• La recuperación de contraseña requiere un código de verificación de 6 dígitos que expira en 24 horas y se invalida al generar uno nuevo.\n• Si tu sesión expira o es invalidada, la aplicación te redirige automáticamente al inicio de sesión.\n\nRecomendaciones:\n\n• Usa una contraseña única y segura.\n• No compartas tus credenciales con nadie.\n• En despliegues de producción el servidor debe exponerse mediante HTTPS.</string>
 </resources>

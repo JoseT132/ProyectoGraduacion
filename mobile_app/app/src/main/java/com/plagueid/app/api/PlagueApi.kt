@@ -35,6 +35,9 @@ interface PlagueApi {
     @GET("detections")
     suspend fun getDetections(): Response<List<DetectionRecord>>
 
+    @DELETE("detections/{id}")
+    suspend fun deleteDetection(@Path("id") id: Int): Response<MessageResponse>
+
     @Multipart
     @POST("predict")
     suspend fun predict(

@@ -10,14 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.plagueid.app.R
 import com.plagueid.app.SpeciesActivity
 import com.plagueid.app.api.DetectionRecord
+import com.plagueid.app.util.formatIso
 
-class DetectionAdapter(private val items: List<DetectionRecord>) :
-    RecyclerView.Adapter<DetectionAdapter.ViewHolder>() {
+class DetectionAdapter(
+    private val items: List<DetectionRecord>,
+    private val onDelete: (DetectionRecord) -> Unit
+) : RecyclerView.Adapter<DetectionAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val statusStrip: View = itemView.findViewById(R.id.statusStrip)
         val speciesText: TextView = itemView.findViewById(R.id.speciesText)
         val fichaHint: TextView = itemView.findViewById(R.id.fichaHint)
+        val deleteButton: TextView = itemView.findViewById(R.id.deleteButton)
         val confidenceText: TextView = itemView.findViewById(R.id.confidenceText)
         val locationText: TextView = itemView.findViewById(R.id.locationText)
         val dateText: TextView = itemView.findViewById(R.id.dateText)
@@ -33,7 +37,7 @@ class DetectionAdapter(private val items: List<DetectionRecord>) :
         val ctx = holder.itemView.context
 
         val hasSpecies = item.species != null
-        holder.speciesText.text = item.species?.scientificName ?: "Especie desconocida"
+        holder.speciesText.text = item.species?.scientificName ?: ctx.getString(R.string.unknown_species)
         holder.confidenceText.text = "Confianza: ${"%.2f".format((item.confidence ?: 0f) * 100)}%"
 
         holder.locationText.text = when {
@@ -44,7 +48,7 @@ class DetectionAdapter(private val items: List<DetectionRecord>) :
                 "Ubicación: ${"%.4f".format(item.latitude)}, ${"%.4f".format(item.longitude)}${item.region?.let { " ($it)" } ?: ""}"
         }
 
-        holder.dateText.text = item.createdAt ?: "—"
+        holder.dateText.text = formatIso(item.createdAt)
 
         val stripColor = when {
             !hasSpecies -> R.color.status_gray
@@ -61,6 +65,7 @@ class DetectionAdapter(private val items: List<DetectionRecord>) :
                     .putExtra(SpeciesActivity.EXTRA_SLUG, slug)
             )
         }
+        holder.deleteButton.setOnClickListener { onDelete(item) }
     }
 
     override fun getItemCount(): Int = items.size

@@ -138,3 +138,14 @@ def get_detections(
     current_user: models.User = Depends(auth.get_current_user),
 ):
     return crud.get_user_detections(db, current_user.id, skip=skip, limit=limit)
+
+
+@app.delete("/detections/{detection_id}")
+def delete_detection(
+    detection_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user),
+):
+    if not crud.delete_detection(db, detection_id, current_user.id):
+        raise HTTPException(status_code=404, detail="Detección no encontrada")
+    return {"message": "Detección eliminada"}

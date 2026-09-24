@@ -215,7 +215,8 @@ class ScanActivity : AppCompatActivity() {
             )
             LocalDetections.save(applicationContext, frame, record)
 
-            val synced = syncToBackend(frame, record.id)
+            val crop = cropBitmap(frame, detection)
+            val synced = syncToBackend(crop, record.id)
 
             withContext(Dispatchers.Main) {
                 if (isFinishing || isDestroyed) return@withContext

@@ -1,10 +1,15 @@
 import os
+import secrets
 import jwt
 from datetime import datetime, timedelta
 from typing import Optional
 from passlib.context import CryptContext
 
-SECRET_KEY = os.getenv("SECRET_KEY", "plagueid-secret-change-in-production")
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    SECRET_KEY = secrets.token_hex(32)
+    print("[security] ADVERTENCIA: SECRET_KEY no definida en .env. Se genero una "
+          "clave efimera; las sesiones existentes se invalidaran al reiniciar.")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_DAYS = 7
 

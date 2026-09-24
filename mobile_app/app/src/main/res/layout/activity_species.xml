@@ -23,38 +23,55 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:padding="18dp">
 
-                <TextView
-                    android:id="@+id/scientificName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold|italic" />
+                <ImageView
+                    android:id="@+id/speciesImage"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:scaleType="centerCrop"
+                    android:background="@color/leaf_pale"
+                    android:contentDescription="@string/species_photo_desc" />
 
-                <TextView
-                    android:id="@+id/commonName"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/leaf_pale"
-                    android:textSize="16sp" />
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
 
-                <TextView
-                    android:id="@+id/familyChip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/chip_bg"
-                    android:paddingStart="12dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="12dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/scientificName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold|italic" />
+
+                    <TextView
+                        android:id="@+id/commonName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/leaf_pale"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/familyChip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/chip_bg"
+                        android:paddingStart="12dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

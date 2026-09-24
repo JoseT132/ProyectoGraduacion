@@ -49,6 +49,7 @@ class SpeciesActivity : AppCompatActivity() {
     }
 
     private fun bindSpecies(species: Species) {
+        loadSpeciesImage(species.slug)
         binding.scientificName.text = species.scientificName
         binding.commonName.text = species.commonName ?: ""
         binding.commonName.visibility =
@@ -71,6 +72,18 @@ class SpeciesActivity : AppCompatActivity() {
 
         binding.progressBar.visibility = View.GONE
         binding.contentContainer.visibility = View.VISIBLE
+    }
+
+    private fun loadSpeciesImage(slug: String) {
+        try {
+            assets.open("species/$slug.jpg").use { input ->
+                binding.speciesImage.setImageBitmap(
+                    android.graphics.BitmapFactory.decodeStream(input)
+                )
+            }
+        } catch (e: Exception) {
+            binding.speciesImage.setImageResource(R.drawable.ic_leaf_light)
+        }
     }
 
     private fun showError() {

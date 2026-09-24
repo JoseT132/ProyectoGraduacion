@@ -78,6 +78,22 @@ def get_user_detections(db: Session, user_id: int, skip: int = 0, limit: int = 1
     )
 
 
+def delete_detection(db: Session, detection_id: int, user_id: int):
+    detection = (
+        db.query(models.Detection)
+        .filter(
+            models.Detection.id == detection_id,
+            models.Detection.user_id == user_id,
+        )
+        .first()
+    )
+    if detection is None:
+        return False
+    db.delete(detection)
+    db.commit()
+    return True
+
+
 def invalidate_user_reset_codes(db: Session, user_id: int):
     db.query(models.PasswordResetCode).filter(
         models.PasswordResetCode.user_id == user_id,

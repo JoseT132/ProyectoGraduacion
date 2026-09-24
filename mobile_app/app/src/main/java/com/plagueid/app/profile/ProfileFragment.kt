@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.plagueid.app.LegalActivity
 import com.plagueid.app.LoginActivity
 import com.plagueid.app.R
 import com.plagueid.app.api.ApiClient
@@ -40,10 +41,26 @@ class ProfileFragment : Fragment() {
         emailText = view.findViewById(R.id.emailText)
         ageText = view.findViewById(R.id.ageText)
 
-        view.findViewById<View>(R.id.logoutButton).setOnClickListener { logout() }
+        view.findViewById<View>(R.id.termsCard).setOnClickListener {
+            openLegal(LegalActivity.SECTION_TERMS)
+        }
+        view.findViewById<View>(R.id.privacyCard).setOnClickListener {
+            openLegal(LegalActivity.SECTION_PRIVACY)
+        }
+        view.findViewById<View>(R.id.securityCard).setOnClickListener {
+            openLegal(LegalActivity.SECTION_SECURITY)
+        }
+        view.findViewById<View>(R.id.logoutCard).setOnClickListener { logout() }
 
         loadCachedProfile()
         loadRemoteProfile()
+    }
+
+    private fun openLegal(section: String) {
+        startActivity(
+            Intent(requireContext(), LegalActivity::class.java)
+                .putExtra(LegalActivity.EXTRA_SECTION, section)
+        )
     }
 
     private fun loadCachedProfile() {

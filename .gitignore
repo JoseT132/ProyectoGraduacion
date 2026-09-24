@@ -53,6 +53,11 @@ mobile_app/app/debug/
 mobile_app/jdk/
 mobile_app/*.zip
 
+# Keystores y credenciales de firma
+*.keystore
+*.jks
+keystore.properties
+
 # Sistema operativo
 .DS_Store
 Thumbs.db
