@@ -7,8 +7,10 @@ _MODEL = None
 
 
 def find_cls_model() -> Path:
-    root = Path(__file__).parents[3].resolve()
+    backend_dir = Path(__file__).parents[2].resolve()
+    root = backend_dir.parent
     candidates = [
+        backend_dir / "models" / "classifier_v4.pt",
         root / "runs" / "classify" / "insect_yolov11s_cls_crops_v4" / "weights" / "best.pt",
         root / "runs" / "classify" / "runs" / "classify" / "insect_yolov11s_cls_crops_v4" / "weights" / "best.pt",
         root / "runs" / "classify" / "runs" / "classify" / "insect_yolov11s_cls_crops_v3" / "weights" / "best.pt",

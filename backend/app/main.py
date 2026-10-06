@@ -9,7 +9,7 @@ from . import auth, regions
 from .database import engine, get_db
 from .services.predict import predict_image
 
-UNKNOWN_THRESHOLD = 0.80
+UNKNOWN_THRESHOLD = 0.75
 
 
 def _migrate(engine):
@@ -37,7 +37,8 @@ def _migrate(engine):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     models.Base.metadata.create_all(bind=engine)
-    _migrate(engine)
+    if engine.dialect.name == "sqlite":
+        _migrate(engine)
     db = next(get_db())
     seed.seed_species(db)
     db.close()
