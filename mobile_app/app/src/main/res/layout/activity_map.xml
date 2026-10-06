@@ -51,5 +51,14 @@
             android:text="@string/no_map_points"
             android:textColor="@color/text_muted"
             android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/myLocationFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_my_location"
+            android:contentDescription="@string/my_location" />
     </FrameLayout>
 </LinearLayout>

@@ -90,6 +90,20 @@
     <string name="map_title">Mapa de detecciones</string>
     <string name="no_map_points">Sin detecciones con ubicación registrada</string>
 
+    <!-- Fecha de nacimiento / perfil -->
+    <string name="day_label">Día</string>
+    <string name="month_label">Mes</string>
+    <string name="year_label">Año</string>
+    <string name="complete_registration">Completa tu registro</string>
+    <string name="birth_date_required">Necesitamos tu fecha de nacimiento para crear tu cuenta. Desliza para seleccionarla.</string>
+    <string name="continue_btn">Continuar</string>
+    <string name="account_section_title">Cuenta</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="edit_profile_subtitle">Nombre y fecha de nacimiento</string>
+    <string name="profile_updated">Perfil actualizado</string>
+    <string name="save">Guardar</string>
+    <string name="my_location">Mi ubicación</string>
+
     <!-- Perfil / legal -->
     <string name="legal_section_title">Información y legal</string>
     <string name="terms_title">Términos y condiciones</string>

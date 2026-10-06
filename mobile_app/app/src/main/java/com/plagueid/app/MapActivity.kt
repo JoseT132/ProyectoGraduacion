@@ -1,10 +1,13 @@
 package com.plagueid.app
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.core.content.ContextCompat
@@ -21,11 +24,24 @@ import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MapActivity : AppCompatActivity() {
 
     private lateinit var map: MapView
     private lateinit var emptyText: TextView
+    private lateinit var myLocationOverlay: MyLocationNewOverlay
+
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            centerOnMyLocation()
+        } else {
+            Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +59,40 @@ class MapActivity : AppCompatActivity() {
         map.controller.setZoom(7.0)
         map.controller.setCenter(GeoPoint(14.6349, -90.5069))
 
+        myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(this), map)
+        map.overlays.add(myLocationOverlay)
+
         findViewById<ImageButton>(R.id.backButton).setOnClickListener { finish() }
+        findViewById<View>(R.id.myLocationFab).setOnClickListener { onMyLocationTap() }
 
         loadMarkers()
+    }
+
+    private fun onMyLocationTap() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            return
+        }
+        centerOnMyLocation()
+    }
+
+    private fun centerOnMyLocation() {
+        myLocationOverlay.enableMyLocation()
+        myLocationOverlay.enableFollowLocation()
+        val current = myLocationOverlay.myLocation
+        if (current != null) {
+            map.controller.setZoom(15.0)
+            map.controller.animateTo(current)
+        } else {
+            map.controller.setZoom(15.0)
+            myLocationOverlay.runOnFirstFix {
+                runOnUiThread {
+                    myLocationOverlay.myLocation?.let { map.controller.animateTo(it) }
+                }
+            }
+        }
     }
 
     private fun loadMarkers() {

@@ -142,14 +142,27 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val response = ApiClient.getApi(this@LoginActivity).getMe()
-                if (response.isSuccessful && response.body() != null) {
-                    sessionManager.saveUser(response.body()!!)
+                withContext(Dispatchers.Main) {
+                    val profile = response.body()
+                    if (response.isSuccessful && profile != null) {
+                        sessionManager.saveUser(profile)
+                        if (profile.birthDate == null) {
+                            goToCompleteProfile()
+                        } else {
+                            goToMain()
+                        }
+                    } else {
+                        goToMain()
+                    }
                 }
-                withContext(Dispatchers.Main) { goToMain() }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) { goToMain() }
             }
         }
+    }
+
+    private fun goToCompleteProfile() {
+        startActivity(Intent(this, CompleteProfileActivity::class.java))
     }
 
     private fun goToMain() {

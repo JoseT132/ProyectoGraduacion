@@ -96,6 +96,24 @@ def test_predict_and_detections(client):
     assert not any(d["id"] == det_id for d in dets.json())
 
 
+def test_update_profile(client):
+    r = client.post("/auth/login", json={"email": EMAIL, "password": NEW_PASSWORD})
+    token = r.json()["access_token"]
+
+    r = client.patch("/auth/me", json={
+        "first_name": "Nombre Nuevo",
+        "birth_date": "1995-03-15",
+    }, headers=_auth(token))
+    assert r.status_code == 200, r.text
+    assert r.json()["first_name"] == "Nombre Nuevo"
+    assert r.json()["birth_date"] == "1995-03-15"
+    assert r.json()["age"] > 0
+
+    me = client.get("/auth/me", headers=_auth(token))
+    assert me.json()["first_name"] == "Nombre Nuevo"
+    assert me.json()["birth_date"] == "1995-03-15"
+
+
 def test_species_list(client):
     r = client.get("/species")
     assert r.status_code == 200

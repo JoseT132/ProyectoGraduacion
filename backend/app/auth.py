@@ -81,6 +81,15 @@ def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
 
+@router.patch("/me", response_model=schemas.UserProfile)
+def update_users_me(
+    data: schemas.UserUpdate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    return crud.update_user_profile(db, current_user, data.model_dump(exclude_unset=True))
+
+
 @router.post("/forgot-password", response_model=schemas.MessageResponse)
 def forgot_password(data: schemas.ForgotPasswordRequest, db: Session = Depends(get_db)):
     message = "Si el correo está registrado, recibirás un código de recuperación"

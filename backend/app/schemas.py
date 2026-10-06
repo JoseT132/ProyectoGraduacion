@@ -118,10 +118,17 @@ class MessageResponse(BaseModel):
 class UserProfile(UserBase):
     id: int
     age: int
+    birth_date: Optional[date] = None
     created_at: datetime
 
     class Config:
         from_attributes = True
+
+
+class UserUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    birth_date: Optional[date] = None
 
 
 class DetectionBase(BaseModel):

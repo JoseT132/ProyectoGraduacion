@@ -29,6 +29,9 @@ interface PlagueApi {
     @GET("auth/me")
     suspend fun getMe(): Response<UserProfile>
 
+    @PATCH("auth/me")
+    suspend fun updateMe(@Body request: UpdateProfileRequest): Response<UserProfile>
+
     @GET("species/{slug}")
     suspend fun getSpecies(@Path("slug") slug: String): Response<Species>
 

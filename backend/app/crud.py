@@ -137,3 +137,12 @@ def update_user_password(db: Session, user: models.User, password_hash: str):
     user.password_hash = password_hash
     db.commit()
     return user
+
+
+def update_user_profile(db: Session, user: models.User, data: dict):
+    for field in ("first_name", "last_name", "birth_date"):
+        if data.get(field) is not None:
+            setattr(user, field, data[field])
+    db.commit()
+    db.refresh(user)
+    return user

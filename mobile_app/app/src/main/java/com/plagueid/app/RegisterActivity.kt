@@ -1,6 +1,5 @@
 package com.plagueid.app
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -11,16 +10,16 @@ import com.plagueid.app.api.ApiClient
 import com.plagueid.app.api.RegisterRequest
 import com.plagueid.app.api.SessionManager
 import com.plagueid.app.databinding.ActivityRegisterBinding
+import com.plagueid.app.util.BirthDateWheels
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var sessionManager: SessionManager
+    private lateinit var birthDateWheels: BirthDateWheels
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,47 +27,10 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sessionManager = SessionManager(this)
-
-        binding.birthDateInput.isFocusable = false
-        binding.birthDateInput.setOnClickListener { showDatePicker() }
+        birthDateWheels = BirthDateWheels(binding.birthDateWheels.root)
 
         binding.registerButton.setOnClickListener { doRegister() }
         binding.loginLink.setOnClickListener { finish() }
-    }
-
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        DatePickerDialog(
-            this,
-            { _, y, m, d ->
-                binding.birthDateInput.setText(String.format("%02d/%02d/%04d", d, m + 1, y))
-            },
-            year, month, day
-        ).show()
-    }
-
-    private fun parseBirthDate(input: String): String? {
-        if (input.isEmpty()) return null
-
-        val isoFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        isoFormatter.isLenient = false
-
-        val formats = listOf("dd/MM/yyyy", "yyyy-MM-dd", "dd-MM-yyyy")
-        for (format in formats) {
-            try {
-                val df = SimpleDateFormat(format, Locale.getDefault())
-                df.isLenient = false
-                val date = df.parse(input) ?: continue
-                return isoFormatter.format(date)
-            } catch (e: Exception) {
-                // probar el siguiente formato
-            }
-        }
-        return null
     }
 
     private fun doRegister() {
@@ -77,8 +39,7 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding.emailInput.text.toString().trim()
         val password = binding.passwordInput.text.toString().trim()
         val confirmPassword = binding.confirmPasswordInput.text.toString().trim()
-        val birthDateRaw = binding.birthDateInput.text.toString().trim()
-        val birthDate = parseBirthDate(birthDateRaw)
+        val birthDate = birthDateWheels.toIsoDate()
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Completa los campos obligatorios", Toast.LENGTH_SHORT).show()
@@ -87,11 +48,6 @@ class RegisterActivity : AppCompatActivity() {
 
         if (password != confirmPassword) {
             Toast.makeText(this, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (birthDateRaw.isNotEmpty() && birthDate == null) {
-            Toast.makeText(this, "La fecha debe ser DD/MM/YYYY", Toast.LENGTH_SHORT).show()
             return
         }
 

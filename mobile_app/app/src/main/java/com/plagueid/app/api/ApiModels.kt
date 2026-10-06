@@ -27,7 +27,14 @@ data class UserProfile(
     @SerializedName("last_name") val lastName: String,
     val email: String,
     val age: Int,
+    @SerializedName("birth_date") val birthDate: String? = null,
     @SerializedName("created_at") val createdAt: String? = null
+)
+
+data class UpdateProfileRequest(
+    @SerializedName("first_name") val firstName: String? = null,
+    @SerializedName("last_name") val lastName: String? = null,
+    @SerializedName("birth_date") val birthDate: String? = null
 )
 
 data class OAuthRequest(val token: String)
