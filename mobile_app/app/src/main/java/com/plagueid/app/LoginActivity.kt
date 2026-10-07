@@ -112,7 +112,10 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         val client = GoogleSignIn.getClient(this, gso)
-        googleLauncher.launch(client.signInIntent)
+        // signOut previo obliga a mostrar el selector de cuentas en cada intento
+        client.signOut().addOnCompleteListener {
+            googleLauncher.launch(client.signInIntent)
+        }
     }
 
     private fun sendGoogleToken(idToken: String) {
