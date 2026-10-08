@@ -3,6 +3,12 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+import requests
+
+# Brevo (API HTTPS) — necesario en Render free, que bloquea los puertos SMTP.
+BREVO_API_KEY = os.getenv("BREVO_API_KEY", "")
+BREVO_URL = "https://api.brevo.com/v3/smtp/email"
+
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER", "")
@@ -11,7 +17,7 @@ SMTP_FROM = os.getenv("SMTP_FROM") or SMTP_USER
 
 
 def smtp_configured() -> bool:
-    return bool(SMTP_USER and SMTP_PASS)
+    return bool(BREVO_API_KEY or (SMTP_USER and SMTP_PASS))
 
 
 def send_reset_code(to_email: str, code: str) -> bool:
@@ -20,11 +26,6 @@ def send_reset_code(to_email: str, code: str) -> bool:
     if not smtp_configured():
         print(f"[emailer] SMTP no configurado. Codigo para {to_email}: {code}")
         return False
-
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = "PlagueID — Codigo de recuperacion"
-    msg["From"] = SMTP_FROM
-    msg["To"] = to_email
 
     text = (
         "Recibimos una solicitud para restablecer la contrasena de tu cuenta PlagueID.\n\n"
@@ -58,6 +59,41 @@ def send_reset_code(to_email: str, code: str) -> bool:
       ignora este mensaje — tu contrasena no cambiara.</p>
     </div>
     """
+    # Via API HTTPS (Brevo): funciona en Render free, donde SMTP esta bloqueado.
+    if BREVO_API_KEY:
+        try:
+            from_name, _, rest = SMTP_FROM.partition("<")
+            sender_email = rest.rstrip("> ").strip() or SMTP_FROM
+            r = requests.post(
+                BREVO_URL,
+                headers={
+                    "api-key": BREVO_API_KEY,
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "sender": {
+                        "name": from_name.strip() or "PlagueID",
+                        "email": sender_email,
+                    },
+                    "to": [{"email": to_email}],
+                    "subject": "PlagueID — Codigo de recuperacion",
+                    "textContent": text,
+                    "htmlContent": html,
+                },
+                timeout=15,
+            )
+            if r.status_code in (200, 201, 202):
+                return True
+            print(f"[emailer] Brevo {r.status_code} enviando a {to_email}: {r.text}. Codigo: {code}")
+            return False
+        except Exception as e:
+            print(f"[emailer] Error Brevo a {to_email}: {e}. Codigo: {code}")
+            return False
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = "PlagueID — Codigo de recuperacion"
+    msg["From"] = SMTP_FROM
+    msg["To"] = to_email
     msg.attach(MIMEText(text, "plain"))
     msg.attach(MIMEText(html, "html"))
 
