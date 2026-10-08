@@ -22,22 +22,40 @@ def send_reset_code(to_email: str, code: str) -> bool:
         return False
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = "PlagueID - Codigo de recuperacion"
+    msg["Subject"] = "PlagueID — Codigo de recuperacion"
     msg["From"] = SMTP_FROM
     msg["To"] = to_email
 
     text = (
-        f"Tu codigo de recuperacion de PlagueID es: {code}\n\n"
-        "Expira en 24 horas o cuando se genere uno nuevo.\n"
+        "Recibimos una solicitud para restablecer la contrasena de tu cuenta PlagueID.\n\n"
+        f"Tu codigo de recuperacion es: {code}\n\n"
+        "Para recuperar tu contrasena:\n"
+        "1. Abre la aplicacion PlagueID en tu telefono.\n"
+        "2. En la pantalla de inicio de sesion toca \"Olvide mi contrasena\".\n"
+        "3. Ingresa este codigo de 6 digitos.\n"
+        "4. Escribe tu nueva contrasena en la misma aplicacion.\n\n"
+        "El codigo expira en 24 horas o cuando se genere uno nuevo.\n"
         "Si no solicitaste este codigo, ignora este mensaje."
     )
     html = f"""
-    <div style="font-family:Arial,sans-serif;max-width:480px;margin:auto">
-      <h2 style="color:#1B5E20">PlagueID</h2>
-      <p>Tu codigo de recuperacion es:</p>
-      <p style="font-size:32px;font-weight:bold;letter-spacing:6px;color:#2E7D32">{code}</p>
-      <p>Expira en <b>24 horas</b> o cuando se genere uno nuevo.</p>
-      <p style="color:#5F6B62;font-size:12px">Si no solicitaste este codigo, ignora este mensaje.</p>
+    <div style="font-family:Arial,sans-serif;max-width:480px;margin:auto;border:1px solid #C8E6C9;border-radius:12px;padding:28px">
+      <h2 style="color:#1B5E20;margin:0 0 16px">PlagueID</h2>
+      <p style="color:#2E3B32;margin:0 0 8px">Recibimos una solicitud para restablecer la
+      contrasena de tu cuenta.</p>
+      <p style="color:#2E3B32;margin:16px 0 4px">Tu codigo de recuperacion es:</p>
+      <p style="font-size:34px;font-weight:bold;letter-spacing:8px;color:#2E7D32;
+      background:#F1F8E9;border-radius:10px;text-align:center;padding:14px 0;margin:8px 0 16px">{code}</p>
+      <p style="color:#2E3B32;margin:0 0 6px"><b>Para recuperar tu contrasena:</b></p>
+      <ol style="color:#2E3B32;margin:0 0 16px;padding-left:20px;line-height:1.6">
+        <li>Abre la aplicacion <b>PlagueID</b> en tu telefono.</li>
+        <li>En la pantalla de inicio de sesion toca <b>"Olvide mi contrasena"</b>.</li>
+        <li>Ingresa este codigo de 6 digitos.</li>
+        <li>Escribe tu nueva contrasena en la misma aplicacion.</li>
+      </ol>
+      <p style="color:#5F6B62;font-size:13px;margin:0 0 8px">El codigo expira en
+      <b>24 horas</b> o cuando se genere uno nuevo.</p>
+      <p style="color:#5F6B62;font-size:12px;margin:0">Si no solicitaste este codigo,
+      ignora este mensaje — tu contrasena no cambiara.</p>
     </div>
     """
     msg.attach(MIMEText(text, "plain"))

@@ -1,7 +1,11 @@
 import io
 from pathlib import Path
+import torch
 from PIL import Image
 from ultralytics import YOLO
+
+# Un solo hilo reduce el consumo de RAM/CPU en instancias pequenas (Render free)
+torch.set_num_threads(1)
 
 _MODEL = None
 

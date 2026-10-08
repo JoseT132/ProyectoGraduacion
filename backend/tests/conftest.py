@@ -7,6 +7,10 @@ TEST_DB = BACKEND_DIR / "test_backend.db"
 
 os.environ["DATABASE_URL"] = f"sqlite:///{TEST_DB.as_posix()}"
 os.environ.setdefault("SECRET_KEY", "test-secret-key")
+# SMTP apagado en tests: forgot-password debe devolver dev_code.
+# load_dotenv no sobreescribe variables ya definidas.
+os.environ["SMTP_USER"] = ""
+os.environ["SMTP_PASS"] = ""
 
 sys.path.insert(0, str(BACKEND_DIR))
 
