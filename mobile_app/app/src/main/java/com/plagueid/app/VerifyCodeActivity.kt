@@ -18,7 +18,6 @@ class VerifyCodeActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_EMAIL = "extra_email"
-        const val EXTRA_DEV_CODE = "extra_dev_code"
     }
 
     private lateinit var binding: ActivityVerifyCodeBinding
@@ -30,7 +29,6 @@ class VerifyCodeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         email = intent.getStringExtra(EXTRA_EMAIL) ?: ""
-        intent.getStringExtra(EXTRA_DEV_CODE)?.let { binding.codeInput.setText(it) }
 
         binding.verifyButton.setOnClickListener { verifyCode() }
         binding.resendLink.setOnClickListener { resend() }
@@ -81,9 +79,7 @@ class VerifyCodeActivity : AppCompatActivity() {
                     .forgotPassword(ForgotPasswordRequest(email))
                 withContext(Dispatchers.Main) {
                     binding.progressBar.visibility = View.GONE
-                    val body = response.body()
-                    if (response.isSuccessful && body != null) {
-                        body.devCode?.let { binding.codeInput.setText(it) }
+                    if (response.isSuccessful) {
                         Toast.makeText(this@VerifyCodeActivity, R.string.code_sent, Toast.LENGTH_SHORT).show()
                     }
                 }

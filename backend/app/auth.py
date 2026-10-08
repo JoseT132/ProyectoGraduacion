@@ -22,6 +22,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
+DEV_MODE = os.getenv("DEV_MODE", "").lower() == "true"
 
 
 def get_current_user(
@@ -102,7 +103,8 @@ def forgot_password(data: schemas.ForgotPasswordRequest, db: Session = Depends(g
     response = {"message": message}
     if not emailer.smtp_configured():
         emailer.send_reset_code(user.email, code)  # loguea el codigo en consola
-        response["dev_code"] = code
+        if DEV_MODE:
+            response["dev_code"] = code
     elif not emailer.send_reset_code(user.email, code):
         raise HTTPException(status_code=500, detail="No se pudo enviar el correo")
     return response

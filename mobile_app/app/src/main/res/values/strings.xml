@@ -51,7 +51,7 @@
     <string name="resend_code">Reenviar código</string>
     <string name="new_password_title">Nueva contraseña</string>
     <string name="new_password_subtitle">Código verificado. Elige tu nueva contraseña.</string>
-    <string name="code_sent_dev">SMTP no configurado — código de prueba: %1$s</string>
+
     <string name="reset_done">Contraseña actualizada. Inicia sesión.</string>
     <string name="reset_fields_error">Completa correo, código y nueva contraseña</string>
     <string name="back_to_login">Volver al inicio de sesión</string>

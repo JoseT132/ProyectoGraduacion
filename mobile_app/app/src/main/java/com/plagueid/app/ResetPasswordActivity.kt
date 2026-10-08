@@ -42,23 +42,14 @@ class ResetPasswordActivity : AppCompatActivity() {
                     binding.progressBar.visibility = View.GONE
                     val body = response.body()
                     if (response.isSuccessful && body != null) {
-                        if (body.devCode != null) {
-                            Toast.makeText(
-                                this@ResetPasswordActivity,
-                                getString(R.string.code_sent_dev, body.devCode),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                this@ResetPasswordActivity,
-                                R.string.code_sent,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                        Toast.makeText(
+                            this@ResetPasswordActivity,
+                            R.string.code_sent,
+                            Toast.LENGTH_LONG
+                        ).show()
                         startActivity(
                             Intent(this@ResetPasswordActivity, VerifyCodeActivity::class.java)
                                 .putExtra(VerifyCodeActivity.EXTRA_EMAIL, email)
-                                .putExtra(VerifyCodeActivity.EXTRA_DEV_CODE, body.devCode)
                         )
                     } else {
                         Toast.makeText(

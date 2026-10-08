@@ -11,6 +11,7 @@ os.environ.setdefault("SECRET_KEY", "test-secret-key")
 # load_dotenv no sobreescribe variables ya definidas.
 os.environ["SMTP_USER"] = ""
 os.environ["SMTP_PASS"] = ""
+os.environ["DEV_MODE"] = "true"
 
 sys.path.insert(0, str(BACKEND_DIR))
 
