@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object ApiClient {
 
@@ -25,6 +26,10 @@ object ApiClient {
             level = HttpLoggingInterceptor.Level.BASIC
         }
         return OkHttpClient.Builder()
+            // Timeouts altos: el free tier de Render tarda ~50s en despertar
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(90, TimeUnit.SECONDS)
+            .writeTimeout(90, TimeUnit.SECONDS)
             .addInterceptor(logging)
             .addInterceptor(AuthInterceptor(appContext))
             .build()
