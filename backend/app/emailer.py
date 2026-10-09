@@ -1,3 +1,4 @@
+import base64
 import os
 import smtplib
 from email.mime.text import MIMEText
@@ -5,10 +6,16 @@ from email.mime.multipart import MIMEMultipart
 
 import requests
 
-# Brevo (API HTTPS) — necesario en Render free, que bloquea los puertos SMTP.
-BREVO_API_KEY = os.getenv("BREVO_API_KEY", "")
-BREVO_URL = "https://api.brevo.com/v3/smtp/email"
+# Gmail API (HTTPS) — necesario en Render free, que bloquea los puertos SMTP.
+# Credenciales del cliente OAuth "App de escritorio" autorizado por la cuenta
+# remitente (scope gmail.send). Generar con tools/get_gmail_token.py.
+GMAIL_CLIENT_ID = os.getenv("GMAIL_SENDER_CLIENT_ID", "")
+GMAIL_CLIENT_SECRET = os.getenv("GMAIL_SENDER_CLIENT_SECRET", "")
+GMAIL_REFRESH_TOKEN = os.getenv("GMAIL_SENDER_REFRESH_TOKEN", "")
+GMAIL_SEND_URL = "https://gmail.googleapis.com/gmail/v1/users/me/messages/send"
+GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 
+# Fallback SMTP para desarrollo local.
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER", "")
@@ -16,15 +23,30 @@ SMTP_PASS = os.getenv("SMTP_PASS", "")
 SMTP_FROM = os.getenv("SMTP_FROM") or SMTP_USER
 
 
-def smtp_configured() -> bool:
-    return bool(BREVO_API_KEY or (SMTP_USER and SMTP_PASS))
+def email_configured() -> bool:
+    return bool(GMAIL_REFRESH_TOKEN or (SMTP_USER and SMTP_PASS))
+
+
+def _gmail_access_token() -> str:
+    r = requests.post(
+        GOOGLE_TOKEN_URL,
+        data={
+            "client_id": GMAIL_CLIENT_ID,
+            "client_secret": GMAIL_CLIENT_SECRET,
+            "refresh_token": GMAIL_REFRESH_TOKEN,
+            "grant_type": "refresh_token",
+        },
+        timeout=15,
+    )
+    r.raise_for_status()
+    return r.json()["access_token"]
 
 
 def send_reset_code(to_email: str, code: str) -> bool:
-    """Envia el codigo de recuperacion. Devuelve False si SMTP no esta
+    """Envia el codigo de recuperacion. Devuelve False si el correo no esta
     configurado o el envio falla (el codigo se loguea para desarrollo)."""
-    if not smtp_configured():
-        print(f"[emailer] SMTP no configurado. Codigo para {to_email}: {code}")
+    if not email_configured():
+        print(f"[emailer] Correo no configurado. Codigo para {to_email}: {code}")
         return False
 
     text = (
@@ -59,36 +81,6 @@ def send_reset_code(to_email: str, code: str) -> bool:
       ignora este mensaje — tu contrasena no cambiara.</p>
     </div>
     """
-    # Via API HTTPS (Brevo): funciona en Render free, donde SMTP esta bloqueado.
-    if BREVO_API_KEY:
-        try:
-            from_name, _, rest = SMTP_FROM.partition("<")
-            sender_email = rest.rstrip("> ").strip() or SMTP_FROM
-            r = requests.post(
-                BREVO_URL,
-                headers={
-                    "api-key": BREVO_API_KEY,
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "sender": {
-                        "name": from_name.strip() or "PlagueID",
-                        "email": sender_email,
-                    },
-                    "to": [{"email": to_email}],
-                    "subject": "PlagueID — Codigo de recuperacion",
-                    "textContent": text,
-                    "htmlContent": html,
-                },
-                timeout=15,
-            )
-            if r.status_code in (200, 201, 202):
-                return True
-            print(f"[emailer] Brevo {r.status_code} enviando a {to_email}: {r.text}. Codigo: {code}")
-            return False
-        except Exception as e:
-            print(f"[emailer] Error Brevo a {to_email}: {e}. Codigo: {code}")
-            return False
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = "PlagueID — Codigo de recuperacion"
@@ -96,6 +88,24 @@ def send_reset_code(to_email: str, code: str) -> bool:
     msg["To"] = to_email
     msg.attach(MIMEText(text, "plain"))
     msg.attach(MIMEText(html, "html"))
+
+    # Via Gmail API (HTTPS): funciona en Render free, donde SMTP esta bloqueado.
+    if GMAIL_REFRESH_TOKEN:
+        try:
+            raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+            r = requests.post(
+                GMAIL_SEND_URL,
+                headers={"Authorization": f"Bearer {_gmail_access_token()}"},
+                json={"raw": raw},
+                timeout=15,
+            )
+            if r.status_code == 200:
+                return True
+            print(f"[emailer] Gmail API {r.status_code} enviando a {to_email}: {r.text}. Codigo: {code}")
+            return False
+        except Exception as e:
+            print(f"[emailer] Error Gmail API a {to_email}: {e}. Codigo: {code}")
+            return False
 
     try:
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=15) as server:

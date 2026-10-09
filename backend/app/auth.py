@@ -101,7 +101,7 @@ def forgot_password(data: schemas.ForgotPasswordRequest, db: Session = Depends(g
     crud.create_reset_code(db, user.id, get_password_hash(code), hours=24)
 
     response = {"message": message}
-    if not emailer.smtp_configured():
+    if not emailer.email_configured():
         emailer.send_reset_code(user.email, code)  # loguea el codigo en consola
         if DEV_MODE:
             response["dev_code"] = code
