@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, UploadFile, File, HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+from starlette.concurrency import run_in_threadpool
 from typing import List, Optional
 
 from . import models, crud, schemas, seed
@@ -86,7 +87,9 @@ async def predict(
 
     image_bytes = await file.read()
     try:
-        predictions = predict_image(image_bytes)
+        # La inferencia es sincrona: en un hilo aparte para no bloquear el
+        # event loop (torch tarda varios segundos y congelaria los requests).
+        predictions = await run_in_threadpool(predict_image, image_bytes)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error en inferencia: {e}")
 
