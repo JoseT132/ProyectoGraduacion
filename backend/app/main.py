@@ -8,7 +8,7 @@ from typing import List, Optional
 from . import models, crud, schemas, seed
 from . import auth, regions
 from .database import engine, get_db
-from .services.predict import predict_image
+from .services.predict import predict_image, get_model
 
 UNKNOWN_THRESHOLD = 0.75
 
@@ -43,6 +43,8 @@ async def lifespan(app: FastAPI):
     db = next(get_db())
     seed.seed_species(db)
     db.close()
+    # Precarga del modelo YOLO: el primer /predict no paga el costo de carga.
+    get_model()
     yield
 
 
